@@ -1,3 +1,40 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "dashboard-mockup-1",
+      "description": "A floating mockup of a dashboard UI element.",
+      "imageUrl": "https://picsum.photos/seed/rafid1/500/300",
+      "imageHint": "dashboard ui"
+    },
+    {
+      "id": "dashboard-mockup-2",
+      "description": "Another floating mockup of a dashboard UI element.",
+      "imageUrl": "https://picsum.photos/seed/rafid2/400/450",
+      "imageHint": "analytics chart"
+    },
+    {
+      "id": "screenshot-1",
+      "description": "Screenshot of the Rafid system.",
+      "imageUrl": "https://picsum.photos/seed/rafid-ss1/800/450",
+      "imageHint": "dashboard interface"
+    },
+    {
+      "id": "screenshot-2",
+      "description": "Screenshot of the Rafid system.",
+      "imageUrl": "https://picsum.photos/seed/rafid-ss2/800/450",
+      "imageHint": "data table"
+    },
+    {
+      "id": "screenshot-3",
+      "description": "Screenshot of the Rafid system.",
+      "imageUrl": "https://picsum.photos/seed/rafid-ss3/800/450",
+      "imageHint": "property list"
+    },
+    {
+      "id": "screenshot-4",
+      "description": "Screenshot of the Rafid system.",
+      "imageUrl": "https://picsum.photos/seed/rafid-ss4/800/450",
+      "imageHint": "map view"
+    }
+  ]
 }
