@@ -2,27 +2,36 @@ export const content = {
   ar: {
     header: {
       nav: {
-        problem: 'المشكلة',
-        solution: 'الحل',
+        home: 'الرئيسية',
         features: 'المميزات',
+        system: 'النظام',
+        pricing: 'الأسعار',
+        contact: 'تواصل معنا',
       },
       cta: 'اطلب عرض',
       login: 'تسجيل الدخول',
     },
     hero: {
       headline: 'إدارة عقاراتك بذكاء… مع رافد',
-      subheadline: 'نظام متكامل لإدارة العقارات والمرافق بسهولة واحترافية',
+      subheadline: 'نظام متكامل لإدارة العقارات والمرافق بسهولة واحترافية.',
       cta1: 'اطلب عرض',
       cta2: 'شاهد النظام',
+      cards: {
+        contracts: 'العقود',
+        revenue: 'الإيرادات',
+        alerts: 'تنبيهات',
+        maintenance: 'طلبات صيانة',
+      },
     },
     problem: {
       eyebrow: 'التحديات الشائعة',
       headline: 'هل تعاني من فوضى إدارة العقارات؟',
       subheadline: 'الأساليب التقليدية لم تعد كافية. عدم الدقة، ضياع الوقت، وفقدان السيطرة هي مجرد بداية للمشاكل.',
       painPoints: [
-        'فقدان السيطرة على العقود',
+        'ضياع العقود',
+        'تأخير التحصيل',
         'صعوبة متابعة الصيانة',
-        'تأخير في تحصيل الإيجارات',
+        'عدم وضوح التقارير',
       ],
     },
     solution: {
@@ -31,40 +40,47 @@ export const content = {
       subheadline: 'نقدم لك منصة موحدة تربط جميع جوانب إدارة الممتلكات، مما يمنحك رؤية واضحة وسيطرة كاملة.',
       centerText: 'النظام الأساسي',
       modules: [
-        { icon: 'contracts', title: 'العقود', description: 'إدارة وتتبع جميع عقود الإيجار بكل سهولة.' },
-        { icon: 'rentals', title: 'الإيجارات', description: 'أتمتة الفواتير ومتابعة التحصيلات بضغطة زر.' },
-        { icon: 'maintenance', title: 'الصيانة', description: 'تنظيم طلبات الصيانة وتعيين المهام بكفاءة.' },
-        { icon: 'reports', title: 'التقارير', description: 'احصل على تقارير مالية وتشغيلية دقيقة فورًا.' },
+        { icon: 'contracts', title: 'العقود' },
+        { icon: 'rentals', title: 'الإيجارات' },
+        { icon: 'maintenance', title: 'الصيانة' },
+        { icon: 'reports', title: 'التقارير' },
       ],
     },
     features: {
       headline: 'مميزات صُممت لتمكينك',
       subheadline: 'كل ميزة في رافد تم تطويرها بعناية لتسهيل عملك وزيادة أرباحك.',
       items: [
-        { icon: 'contracts', title: 'لوحة تحكم ذكية', description: 'عرض شامل لجميع مؤشرات الأداء الرئيسية في مكان واحد، مما يساعدك على اتخاذ قرارات مستنيرة.' },
-        { icon: 'rentals', title: 'بوابة المستأجرين', description: 'تطبيق خاص للمستأجرين لتقديم طلبات الصيانة، دفع الإيجار، والتواصل المباشر.' },
-        { icon: 'maintenance', title: 'تنبيهات تلقائية', description: 'لا تفوت أي موعد مهم مع نظام التنبيهات الذكي لتجديد العقود ومواعيد التحصيل.' },
-        { icon: 'reports', title: 'دعم متعدد العملات', description: 'إدارة عقاراتك في مختلف دول الخليج بسهولة مع دعم كامل لمختلف العملات.' },
+        { icon: 'contracts', title: 'إدارة العقود', description: 'أرشفة وتتبع جميع العقود بسهولة، مع تنبيهات تلقائية لمواعيد التجديد والانتهاء.' },
+        { icon: 'rentals', title: 'تحصيل الإيجارات', description: 'أتمتة الفواتير وجدولة الدفعات مع بوابات دفع إلكترونية متكاملة لتسهيل التحصيل.' },
+        { icon: 'maintenance', title: 'إدارة الصيانة', description: 'نظام متكامل لتلقي طلبات الصيانة من المستأجرين، تعيين الفنيين، ومتابعة التنفيذ.' },
+        { icon: 'reports', title: 'تقارير ذكية', description: 'احصل على تقارير مالية وتشغيلية دقيقة ولوحات بيانات تفاعلية لاتخاذ قرارات مستنيرة.' },
       ],
     },
     screenshots: {
       headline: 'شاهد النظام عن قرب',
       subheadline: 'تصميم أنيق وواجهة سهلة الاستخدام تجعل إدارة العقارات تجربة ممتعة.',
     },
+    metricsSection: {
+      metrics: [
+        { value: '+500', label: 'وحدة مُدارة' },
+        { value: '95%', label: 'نسبة إشغال' },
+        { value: '+1M', label: 'معاملات سنوية' },
+        { value: '-40%', label: 'تكاليف تشغيلية' },
+      ],
+    },
     whyRafid: {
       eyebrow: 'لماذا رافد؟',
       headline: 'استثمر في نظام يزيد من قيمة محفظتك العقارية',
-      points: [
-        { number: '40%', title: 'زيادة في الكفاءة', description: 'تقليل الوقت المستغرق في المهام الإدارية الروتينية.' },
-        { number: '25%', title: 'انخفاض في التكاليف', description: 'تحسين إدارة الصيانة وتقليل النفقات غير الضرورية.' },
-        { number: '95%', title: 'رضا المستأجرين', description: 'تجربة سلسة وشفافة تزيد من ولاء المستأجرين.' },
+      boldStatements: [
+        'تحكم كامل.',
+        'رؤية واضحة.',
+        'قرارات أسرع.',
       ],
-      boldStatement: 'تحكم كامل. رؤية واضحة. قرارات أسرع.',
     },
     ctaSection: {
-      headline: 'هل أنت جاهز لتبسيط إدارة عقاراتك؟',
-      subheadline: 'اكتشف كيف يمكن لـ "رافد" أن يغير طريقة عملك. اطلب عرضًا توضيحيًا مخصصًا الآن.',
-      cta: 'ابدأ الآن مع رافد',
+      headline: 'ابدأ الآن مع رافد',
+      subheadline: 'احصل على تحكم كامل في عقاراتك من مكان واحد.',
+      cta: 'اطلب عرضًا توضيحيًا',
     },
     footer: {
       tagline: 'إدارة عقاراتك بذكاء.',
@@ -76,9 +92,11 @@ export const content = {
   en: {
     header: {
       nav: {
-        problem: 'The Problem',
-        solution: 'The Solution',
+        home: 'Home',
         features: 'Features',
+        system: 'System',
+        pricing: 'Pricing',
+        contact: 'Contact Us',
       },
       cta: 'Request Demo',
       login: 'Log In',
@@ -88,15 +106,22 @@ export const content = {
       subheadline: 'An integrated system for managing properties and facilities with ease and professionalism.',
       cta1: 'Request Demo',
       cta2: 'Watch the Platform',
+      cards: {
+        contracts: 'Contracts',
+        revenue: 'Revenue',
+        alerts: 'Alerts',
+        maintenance: 'Maintenance Requests',
+      },
     },
     problem: {
       eyebrow: 'Common Challenges',
       headline: 'Struggling with Property Management Chaos?',
       subheadline: 'Traditional methods are no longer enough. Inaccuracy, wasted time, and loss of control are just the beginning.',
       painPoints: [
-        'Loss of control over contracts',
-        'Difficulty in tracking maintenance',
-        'Delays in rent collection',
+        'Losing track of contracts',
+        'Delayed collections',
+        'Complex maintenance tracking',
+        'Unclear financial reports',
       ],
     },
     solution: {
@@ -105,40 +130,47 @@ export const content = {
       subheadline: 'We provide a unified platform that connects all aspects of property management, giving you clear visibility and complete control.',
       centerText: 'The Core System',
       modules: [
-        { icon: 'contracts', title: 'Contracts', description: 'Easily manage and track all lease agreements.' },
-        { icon: 'rentals', title: 'Rentals', description: 'Automate billing and track collections with a click.' },
-        { icon: 'maintenance', title: 'Maintenance', description: 'Efficiently organize maintenance requests and assign tasks.' },
-        { icon: 'reports', title: 'Reports', description: 'Get accurate financial and operational reports instantly.' },
+        { icon: 'contracts', title: 'Contracts' },
+        { icon: 'rentals', title: 'Rentals' },
+        { icon: 'maintenance', title: 'Maintenance' },
+        { icon: 'reports', title: 'Reports' },
       ],
     },
     features: {
       headline: 'Features Designed to Empower You',
       subheadline: 'Every feature in Rafid is carefully developed to simplify your work and increase your profits.',
       items: [
-        { icon: 'contracts', title: 'Smart Dashboard', description: 'A comprehensive overview of all key performance indicators in one place, helping you make informed decisions.' },
-        { icon: 'rentals', title: 'Tenant Portal', description: 'A dedicated app for tenants to submit maintenance requests, pay rent, and communicate directly.' },
-        { icon: 'maintenance', title: 'Automatic Alerts', description: 'Never miss an important date with smart alerts for contract renewals and collection dates.' },
-        { icon: 'reports', title: 'Multi-Currency Support', description: 'Manage your properties across different GCC countries with full support for various currencies.' },
+        { icon: 'contracts', title: 'Contract Management', description: 'Archive and track all contracts easily, with automatic alerts for renewal and expiration dates.' },
+        { icon: 'rentals', title: 'Rent Collection', description: 'Automate invoices and schedule payments with integrated e-payment gateways for easy collection.' },
+        { icon: 'maintenance', title: 'Maintenance Management', description: 'An integrated system to receive maintenance requests from tenants, assign technicians, and track execution.' },
+        { icon: 'reports', title: 'Smart Reports', description: 'Get accurate financial and operational reports and interactive dashboards to make informed decisions.' },
       ],
     },
     screenshots: {
       headline: 'See the Platform Up Close',
       subheadline: 'Elegant design and a user-friendly interface make property management an enjoyable experience.',
     },
+    metricsSection: {
+      metrics: [
+        { value: '+500', label: 'Managed Units' },
+        { value: '95%', label: 'Occupancy Rate' },
+        { value: '+1M', label: 'Yearly Transactions' },
+        { value: '-40%', label: 'Operational Costs' },
+      ],
+    },
     whyRafid: {
       eyebrow: 'Why Rafid?',
       headline: 'Invest in a System That Increases Your Portfolio\'s Value',
-      points: [
-        { number: '40%', title: 'Increase in Efficiency', description: 'Reduce time spent on routine administrative tasks.' },
-        { number: '25%', title: 'Decrease in Costs', description: 'Improve maintenance management and reduce unnecessary expenses.' },
-        { number: '95%', title: 'Tenant Satisfaction', description: 'A smooth and transparent experience increases tenant loyalty.' },
+      boldStatements: [
+        'Full Control.',
+        'Clear Vision.',
+        'Faster Decisions.',
       ],
-      boldStatement: 'Full Control. Clear Vision. Faster Decisions.',
     },
     ctaSection: {
-      headline: 'Ready to Simplify Your Property Management?',
-      subheadline: 'Discover how Rafid can transform your business. Request a personalized demo now.',
-      cta: 'Get Started with Rafid',
+      headline: 'Get Started with Rafid Now',
+      subheadline: 'Gain complete control over your properties from a single place.',
+      cta: 'Request a Demo',
     },
     footer: {
       tagline: 'Manage your properties intelligently.',

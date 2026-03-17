@@ -10,6 +10,7 @@ import { WhyRafidSection } from '@/components/sections/WhyRafidSection';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { useScrollAnimation } from '@/hooks/use-scroll-animation';
+import { MetricsSection } from '@/components/sections/MetricsSection';
 
 export default function Home() {
   useScrollAnimation();
@@ -23,6 +24,7 @@ export default function Home() {
         <FeaturesSection />
         <ScreenshotsSection />
         <WhyRafidSection />
+        <MetricsSection />
         <CtaSection />
       </main>
       <Footer />

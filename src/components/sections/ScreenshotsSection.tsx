@@ -36,9 +36,9 @@ export function ScreenshotsSection() {
         >
           <CarouselContent className="-ml-4">
             {screenshots.map((screenshot, index) => (
-              <CarouselItem key={index} className="md:basis-1/2 lg:basis-2/3 pl-4">
+              <CarouselItem key={index} className="md:basis-1/2 lg:basis-2/3 pl-4 group">
                 <div className="p-1">
-                  <Card className="overflow-hidden border-2 border-primary/20 glow-effect">
+                  <Card className="overflow-hidden border-2 border-primary/20 glow-effect transition-transform duration-300 group-hover:scale-105">
                     <CardContent className="flex aspect-video items-center justify-center p-0">
                       <Image
                         src={screenshot.imageUrl}

@@ -15,9 +15,11 @@ export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navItems = [
-    { label: c.nav.problem, href: '#problem' },
-    { label: c.nav.solution, href: '#solution' },
+    { label: c.nav.home, href: '/' },
     { label: c.nav.features, href: '#features' },
+    { label: c.nav.system, href: '#solution' },
+    { label: c.nav.pricing, href: '#pricing' },
+    { label: c.nav.contact, href: '#contact' },
   ];
 
   return (

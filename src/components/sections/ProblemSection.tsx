@@ -17,16 +17,17 @@ export function ProblemSection() {
           <div className="relative h-96 md:h-[500px] order-last md:order-first">
             {c.painPoints.map((point, index) => {
               const positions = [
-                'top-0 ltr:left-0 rtl:right-0 rotate-[-8deg] hover:!rotate-0',
-                'top-1/3 ltr:right-0 rtl:left-0 rotate-[5deg] hover:!rotate-0',
-                'bottom-0 ltr:left-1/4 rtl:right-1/4 rotate-[3deg] hover:!rotate-0',
+                'top-0 ltr:left-0 rtl:right-0 w-60 rotate-[-8deg] hover:!rotate-0',
+                'top-1/4 ltr:right-0 rtl:left-0 w-72 rotate-[5deg] hover:!rotate-0',
+                'bottom-1/4 ltr:left-10 rtl:right-10 w-64 rotate-[3deg] hover:!rotate-0',
+                'bottom-0 ltr:right-10 rtl:left-10 w-72 rotate-[-6deg] hover:!rotate-0',
               ];
-              const zIndexes = ['z-10', 'z-20', 'z-0'];
+              const zIndexes = ['z-10', 'z-20', 'z-0', 'z-10'];
               return (
                 <Card
                   key={point}
                   className={cn(
-                    'absolute w-64 md:w-80 glass-card shadow-xl transition-all duration-500 hover:scale-110 hover:z-30',
+                    'absolute glass-card shadow-xl transition-all duration-500 hover:scale-110 hover:z-30 hover:shadow-primary/20',
                     positions[index % positions.length],
                     zIndexes[index % zIndexes.length]
                   )}
@@ -34,7 +35,7 @@ export function ProblemSection() {
                 >
                   <CardContent className="p-6">
                     <div className="flex items-center gap-4">
-                      <AlertCircle className="w-8 h-8 text-destructive" />
+                      <AlertCircle className="w-8 h-8 text-primary" />
                       <p className="font-semibold text-lg text-foreground">{point}</p>
                     </div>
                   </CardContent>

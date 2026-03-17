@@ -3,7 +3,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { content } from '@/lib/content';
 import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
-import { ArrowLeft, PlayCircle, FileText, Bell, CircleDollarSign } from 'lucide-react';
+import { ArrowLeft, PlayCircle, FileText, Bell, CircleDollarSign, Wrench } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 
 export function HeroSection() {
@@ -11,17 +11,18 @@ export function HeroSection() {
   const c = content[language].hero;
 
   const dashboardCards = [
-    { title: language === 'ar' ? 'العقود' : 'Contracts', value: '120', icon: FileText, change: '+5%', changeColor: 'text-green-400' },
-    { title: language === 'ar' ? 'التنبيهات' : 'Alerts', value: '5', icon: Bell, change: '+2', changeColor: 'text-yellow-400' },
-    { title: language === 'ar' ? 'الإيرادات' : 'Revenue', value: '12k', icon: CircleDollarSign, change: '+12%', changeColor: 'text-green-400' },
+    { title: c.cards.contracts, value: '128', icon: FileText },
+    { title: c.cards.revenue, value: '45,200', icon: CircleDollarSign, unit: language === 'ar' ? 'ريال' : 'SAR' },
+    { title: c.cards.alerts, value: '6', icon: Bell },
+    { title: c.cards.maintenance, value: '12', icon: Wrench },
   ];
 
   return (
     <section dir={language === 'ar' ? 'rtl' : 'ltr'} className="relative w-full min-h-screen flex items-center justify-center overflow-hidden py-20 md:py-0">
       <div className="absolute inset-0 bg-gradient-to-b from-background to-background/80 z-10"></div>
       <div className="absolute inset-0">
-        <div className="absolute -top-1/4 -left-1/4 w-1/2 h-1/2 bg-primary/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute -bottom-1/4 -right-1/4 w-1/2 h-1/2 bg-[hsl(var(--brand-cyan))]/10 rounded-full blur-3xl animate-pulse animation-delay-2000"></div>
+        <div className="absolute -top-1/4 -left-1/4 w-1/2 h-1/2 bg-primary/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -bottom-1/4 -right-1/4 w-1/2 h-1/2 bg-secondary/10 rounded-full blur-3xl animate-pulse animation-delay-2000"></div>
       </div>
 
       <div className="container mx-auto px-4 z-20 grid md:grid-cols-2 gap-8 items-center">
@@ -47,20 +48,22 @@ export function HeroSection() {
 
         {/* Left side for Dashboard Mockup */}
         <div className="relative animate-float-slow">
-            <Card className="glass-card border-white/10 p-4 md:p-6 shadow-2xl">
+            <Card className="glass-card border-white/5 p-4 md:p-6 shadow-2xl">
                 <CardHeader>
                     <CardTitle className="text-lg font-bold text-foreground">{language === 'ar' ? 'لوحة التحكم' : 'Dashboard'}</CardTitle>
                 </CardHeader>
-                <CardContent className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <CardContent className="grid grid-cols-2 gap-4">
                     {dashboardCards.map((item, index) => (
-                        <Card key={index} className="bg-background/40 border-white/5">
+                        <Card key={index} className="bg-background/40 border-white/5 transition-transform hover:scale-105 hover:-translate-y-1">
                             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
                                 <CardTitle className="text-sm font-medium text-muted-foreground">{item.title}</CardTitle>
                                 <item.icon className="h-4 w-4 text-muted-foreground" />
                             </CardHeader>
                             <CardContent>
-                                <div className="text-2xl font-bold">{item.value}</div>
-                                <p className={cn("text-xs", item.changeColor)}>{item.change}</p>
+                                <div className="text-2xl font-bold">
+                                  {item.value} 
+                                  {item.unit && <span className="text-sm text-muted-foreground ml-1">{item.unit}</span>}
+                                </div>
                             </CardContent>
                         </Card>
                     ))}
@@ -76,6 +79,9 @@ export function HeroSection() {
         }
         .animate-float-slow {
           animation: float-slow 8s ease-in-out infinite;
+        }
+        .animation-delay-2000 {
+            animation-delay: 2s;
         }
       `}</style>
     </section>
