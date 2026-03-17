@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { LanguageProvider } from '@/contexts/LanguageContext';
 import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
@@ -21,10 +20,8 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700;800&family=Inter:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet" />
       </head>
       <body suppressHydrationWarning>
-        <LanguageProvider>
-          {children}
-          <Toaster />
-        </LanguageProvider>
+        {children}
+        <Toaster />
       </body>
     </html>
   );
