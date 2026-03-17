@@ -14,7 +14,7 @@ export function FeaturesSection() {
   const c = content[language].features;
 
   return (
-    <section id="features" className="w-full py-20 md:py-32 overflow-hidden">
+    <section id="features" className="w-full py-16 md:py-24 overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto text-center mb-12 md:mb-20 fade-in-up">
           <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight">{c.headline}</h2>

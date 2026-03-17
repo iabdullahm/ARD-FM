@@ -8,7 +8,7 @@ export function WhyRafidSection() {
   const c = content[language].whyRafid;
 
   return (
-    <section id="pricing" className="w-full py-20 md:py-32 bg-secondary/50">
+    <section id="pricing" className="w-full py-16 md:py-24 bg-secondary/50">
       <div className="container mx-auto px-4 text-center fade-in-up">
         <span className="text-primary font-semibold">{c.eyebrow}</span>
         <h2 className="mt-2 text-3xl md:text-5xl font-extrabold tracking-tight">{c.headline}</h2>

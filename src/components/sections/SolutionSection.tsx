@@ -34,7 +34,7 @@ export function SolutionSection() {
     const isRTL = dir === 'rtl';
 
     return (
-        <section id="solution" className="w-full py-20 md:py-32">
+        <section id="solution" className="w-full py-16 md:py-24">
             <div className="container mx-auto px-4 fade-in-up">
                 <div className="text-center max-w-3xl mx-auto">
                     <span className="text-primary font-semibold">{c.eyebrow}</span>

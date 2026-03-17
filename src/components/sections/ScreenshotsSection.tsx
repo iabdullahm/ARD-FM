@@ -20,7 +20,7 @@ export function ScreenshotsSection() {
   const c = content[language].screenshots;
 
   return (
-    <section id="screenshots" className="w-full py-20 md:py-32">
+    <section id="screenshots" className="w-full py-16 md:py-24">
       <div className="container mx-auto px-4 text-center fade-in-up">
         <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight">{c.headline}</h2>
         <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">{c.subheadline}</p>

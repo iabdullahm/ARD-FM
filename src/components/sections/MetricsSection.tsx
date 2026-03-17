@@ -8,7 +8,7 @@ export function MetricsSection() {
   const c = content[language].metricsSection;
 
   return (
-    <section className="w-full py-12 bg-secondary my-20 md:my-32">
+    <section className="w-full py-12 bg-secondary my-16 md:my-24">
       <div className="relative w-full overflow-hidden">
         <div className="flex animate-scroll">
           {[...c.metrics, ...c.metrics].map((metric, index) => (

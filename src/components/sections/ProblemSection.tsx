@@ -11,7 +11,7 @@ export function ProblemSection() {
   const c = content[language].problem;
 
   return (
-    <section id="problem" className="w-full py-20 md:py-32 bg-secondary/50 overflow-hidden">
+    <section id="problem" className="w-full py-16 md:py-24 bg-secondary/50 overflow-hidden">
       <div className="container mx-auto px-4 fade-in-up">
         <div className="grid md:grid-cols-2 gap-12 md:gap-24 items-center">
           <div className="relative h-96 md:h-[500px] order-last md:order-first">

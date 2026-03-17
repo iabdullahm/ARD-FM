@@ -11,7 +11,7 @@ export function CtaSection() {
   const c = content[language].ctaSection;
 
   return (
-    <section id="contact" className="relative w-full py-20 md:py-32 bg-background border-t border-border mt-20 overflow-hidden">
+    <section id="contact" className="relative w-full py-20 md:py-28 bg-background border-t border-border mt-16 overflow-hidden">
       <div className="absolute inset-0 z-0">
         <div className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-primary/10 rounded-full blur-3xl animate-pulse"></div>
       </div>
