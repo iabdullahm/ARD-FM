@@ -1,22 +1,17 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
+import Image from "next/image"
 import { motion } from "framer-motion"
 import {
   ArrowUpRight,
   BarChart3,
   Building2,
-  ChevronLeft,
-  ChevronRight,
   Globe,
   Hammer,
   LayoutDashboard,
   Menu,
-  Receipt,
-  ShieldCheck,
   Sparkles,
-  Wallet,
-  Wrench,
   X,
 } from "lucide-react"
 
@@ -316,6 +311,21 @@ const marqueeMetrics = [
   "12 Active Tickets",
 ]
 
+const featureImages = [
+  'https://storage.googleapis.com/ard3/Rafid%20Website/contracts%20management.png',
+  'https://storage.googleapis.com/ard3/Rafid%20Website/Rafid-dashboard.png', // Placeholder for "Rent collection"
+  'https://storage.googleapis.com/ard3/Rafid%20Website/maintenance.png',
+  'https://storage.googleapis.com/ard3/Rafid%20Website/Rafid-dashboard.png', // Placeholder for "Reporting"
+]
+
+const screenshotImages = [
+  { url: 'https://storage.googleapis.com/ard3/Rafid%20Website/Rafid-dashboard.png', alt: 'Rafid Dashboard' },
+  { url: 'https://storage.googleapis.com/ard3/Rafid%20Website/contracts%20management.png', alt: 'Rafid Contracts Management' },
+  { url: 'https://storage.googleapis.com/ard3/Rafid%20Website/maintenance.png', alt: 'Rafid Maintenance' },
+  { url: 'https://storage.googleapis.com/ard3/Rafid%20Website/Rafid-dashboard.png', alt: 'Rafid Dashboard' }, // Repeating for 4th card
+]
+
+
 export default function Page() {
   const [lang, setLang] = useState<Lang>("ar")
   const [menuOpen, setMenuOpen] = useState(false)
@@ -395,93 +405,15 @@ export default function Page() {
             className="relative order-1 lg:order-2"
           >
             <div className="absolute -inset-6 rounded-[36px] bg-orange-500/10 blur-3xl" />
-            <div className="relative rounded-[32px] border border-white/10 bg-white/5 p-4 shadow-[0_24px_80px_rgba(2,6,23,.45)] backdrop-blur-xl">
-              <div className="rounded-[26px] border border-white/10 bg-[#0d1d35]/90 p-5">
-                <div className="mb-5 flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-slate-400">{t.dashboard.title}</p>
-                    <h3 className="mt-1 text-lg font-semibold text-white">Rafid</h3>
-                  </div>
-                  <div className="flex gap-2">
-                    <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
-                    <span className="h-2.5 w-2.5 rounded-full bg-orange-400" />
-                    <span className="h-2.5 w-2.5 rounded-full bg-sky-400" />
-                  </div>
-                </div>
-
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <DashboardCard icon={<Receipt className="h-4 w-4" />} label={t.dashboard.contracts} value="128" delta="+12%" />
-                  <DashboardCard icon={<Wallet className="h-4 w-4" />} label={t.dashboard.revenue} value={isArabic ? "45,200 ر.ع" : "OMR 45,200"} delta="+8.4%" />
-                  <DashboardCard icon={<Wrench className="h-4 w-4" />} label={t.dashboard.maintenance} value="12" delta="-3" />
-                  <DashboardCard icon={<ShieldCheck className="h-4 w-4" />} label={t.dashboard.alerts} value="6" delta="Live" />
-                </div>
-
-                <div className="mt-5 grid gap-4 lg:grid-cols-[1fr_0.78fr]">
-                  <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
-                    <div className="mb-4 flex items-center justify-between text-sm text-slate-300">
-                      <span>{t.dashboard.collections}</span>
-                      <span>2026</span>
-                    </div>
-                    <div className="flex h-36 items-end gap-3">
-                      {[48, 64, 58, 78, 66, 84, 92].map((height, i) => (
-                        <motion.div
-                          key={i}
-                          initial={{ height: 0 }}
-                          animate={{ height }}
-                          transition={{ delay: 0.3 + i * 0.08, duration: 0.5 }}
-                          className="flex-1 rounded-t-xl bg-gradient-to-t from-orange-500 via-orange-400 to-orange-300/80"
-                        />
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
-                      <p className="text-sm text-slate-400">{t.dashboard.occupancy}</p>
-                      <div className="mt-3 flex items-end justify-between">
-                        <span className="text-3xl font-bold text-white">95%</span>
-                        <div className="h-3 w-24 overflow-hidden rounded-full bg-white/10">
-                          <motion.div
-                            initial={{ width: 0 }}
-                            animate={{ width: "95%" }}
-                            transition={{ delay: 0.6, duration: 0.8 }}
-                            className="h-full rounded-full bg-gradient-to-r from-orange-500 to-orange-300"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
-                      <p className="text-sm text-slate-400">{t.dashboard.pending}</p>
-                      <div className="mt-3 space-y-2">
-                        {[1, 2, 3].map((row) => (
-                          <div key={row} className="flex items-center justify-between rounded-xl bg-white/[0.04] px-3 py-2 text-sm text-slate-300">
-                            <span>{isArabic ? `مهمة ${row}` : `Task ${row}`}</span>
-                            <span className="rounded-full bg-orange-500/15 px-2 py-1 text-xs text-orange-300">
-                              {isArabic ? "قيد التنفيذ" : "In progress"}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <motion.div
-                animate={{ y: [0, -10, 0] }}
-                transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
-                className={`absolute -bottom-5 ${isArabic ? "-right-5" : "-left-5"} rounded-2xl border border-white/10 bg-[#132542]/95 p-4 shadow-2xl backdrop-blur-md`}
-              >
-                <div className="flex items-center gap-3">
-                  <div className="rounded-xl bg-orange-500/15 p-2 text-orange-300">
-                    <BarChart3 className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-slate-400">{isArabic ? "أداء التحصيل" : "Collection performance"}</p>
-                    <p className="text-sm font-semibold text-white">+40%</p>
-                  </div>
-                </div>
-              </motion.div>
+            <div className="relative rounded-[32px] border border-white/10 bg-white/5 p-2 shadow-[0_24px_80px_rgba(2,6,23,.45)] backdrop-blur-xl">
+               <Image
+                src="https://storage.googleapis.com/ard3/Rafid%20Website/Rafid-dashboard.png"
+                alt="Rafid Dashboard Preview"
+                width={1236}
+                height={794}
+                className="rounded-[26px] object-cover"
+                priority
+              />
             </div>
           </motion.div>
         </div>
@@ -556,8 +488,8 @@ export default function Page() {
               transition={{ duration: 0.6 }}
               className="grid gap-6 rounded-[32px] border border-white/10 bg-white/[0.04] p-5 backdrop-blur-xl lg:grid-cols-2 lg:p-8"
             >
-              <div className={`${index % 2 === 1 ? "lg:order-2" : ""} rounded-[26px] border border-white/10 bg-[#0f1f38] p-6`}>
-                <FeatureVisual index={index} />
+              <div className={`${index % 2 === 1 ? "lg:order-2" : ""} rounded-[26px] border border-white/10 bg-[#0f1f38] p-1`}>
+                <FeatureVisual imageUrl={featureImages[index]} alt={feature.title} />
               </div>
               <div className={`flex flex-col justify-center ${index % 2 === 1 ? "lg:order-1" : ""} ${isArabic ? "text-right" : "text-left"}`}>
                 <div className="mb-4 inline-flex w-fit items-center gap-2 rounded-full bg-orange-500/10 px-3 py-1 text-sm text-orange-300">
@@ -584,18 +516,14 @@ export default function Page() {
               className="group rounded-[28px] border border-white/10 bg-white/[0.04] p-4 backdrop-blur-xl"
             >
               <div className="rounded-[24px] border border-white/10 bg-[#0d1d35] p-4 transition duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_20px_60px_rgba(249,115,22,.12)]">
-                <div className="mb-4 h-44 rounded-[18px] bg-gradient-to-br from-slate-800 via-slate-900 to-[#0f172a] p-3">
-                  <div className="grid h-full grid-cols-6 gap-2">
-                    <div className="col-span-2 rounded-xl bg-white/[0.05]" />
-                    <div className="col-span-4 rounded-xl bg-white/[0.05] p-2">
-                      <div className="h-16 rounded-lg bg-orange-500/15" />
-                      <div className="mt-2 grid grid-cols-3 gap-2">
-                        <div className="h-10 rounded-lg bg-white/[0.05]" />
-                        <div className="h-10 rounded-lg bg-white/[0.05]" />
-                        <div className="h-10 rounded-lg bg-white/[0.05]" />
-                      </div>
-                    </div>
-                  </div>
+                <div className="mb-4 h-44 overflow-hidden rounded-[18px]">
+                  <Image
+                    src={screenshotImages[index].url}
+                    alt={screenshotImages[index].alt}
+                    width={800}
+                    height={450}
+                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
                 </div>
                 <p className="text-base font-semibold text-white">{card}</p>
               </div>
@@ -775,32 +703,6 @@ function BackgroundOrbs() {
   )
 }
 
-function DashboardCard({
-  icon,
-  label,
-  value,
-  delta,
-}: {
-  icon: React.ReactNode
-  label: string
-  value: string
-  delta: string
-}) {
-  return (
-    <motion.div
-      whileHover={{ y: -4 }}
-      className="rounded-2xl border border-white/10 bg-white/[0.04] p-4"
-    >
-      <div className="flex items-start justify-between">
-        <div className="rounded-xl bg-white/[0.06] p-2 text-orange-300">{icon}</div>
-        <span className="text-xs text-emerald-300">{delta}</span>
-      </div>
-      <p className="mt-4 text-sm text-slate-400">{label}</p>
-      <p className="mt-1 text-2xl font-bold text-white">{value}</p>
-    </motion.div>
-  )
-}
-
 function SectionHeading({
   eyebrow,
   title,
@@ -852,62 +754,15 @@ function CoreNode({ title }: { title: string }) {
   )
 }
 
-function FeatureVisual({ index }: { index: number }) {
-  if (index === 0) {
-    return (
-      <div className="grid h-full grid-cols-6 gap-3">
-        <div className="col-span-2 rounded-2xl bg-white/[0.04] p-3" />
-        <div className="col-span-4 space-y-3 rounded-2xl bg-white/[0.04] p-3">
-          <div className="h-12 rounded-xl bg-orange-500/15" />
-          <div className="grid grid-cols-2 gap-3">
-            <div className="h-20 rounded-xl bg-white/[0.04]" />
-            <div className="h-20 rounded-xl bg-white/[0.04]" />
-          </div>
-        </div>
-      </div>
-    )
-  }
-  if (index === 1) {
-    return (
-      <div className="space-y-3">
-        <div className="flex items-end gap-3 h-40">
-          {[42, 68, 56, 84, 74, 92].map((h, i) => (
-            <div key={i} className="flex-1 rounded-t-xl bg-gradient-to-t from-orange-500 to-orange-300" style={{ height: `${h}%` }} />
-          ))}
-        </div>
-        <div className="h-4 rounded-full bg-white/[0.05]" />
-      </div>
-    )
-  }
-  if (index === 2) {
-    return (
-      <div className="space-y-3">
-        {[1, 2, 3].map((n) => (
-          <div key={n} className="flex items-center justify-between rounded-2xl bg-white/[0.04] p-4">
-            <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-xl bg-orange-500/15" />
-              <div className="space-y-2">
-                <div className="h-3 w-28 rounded-full bg-white/[0.08]" />
-                <div className="h-3 w-20 rounded-full bg-white/[0.05]" />
-              </div>
-            </div>
-            <div className="h-8 w-20 rounded-full bg-emerald-500/15" />
-          </div>
-        ))}
-      </div>
-    )
-  }
+function FeatureVisual({ imageUrl, alt }: { imageUrl: string, alt: string }) {
   return (
-    <div className="grid h-full gap-3 sm:grid-cols-2">
-      <div className="rounded-2xl bg-white/[0.04] p-4">
-        <div className="h-24 rounded-xl bg-orange-500/15" />
-        <div className="mt-3 h-3 w-20 rounded-full bg-white/[0.06]" />
-      </div>
-      <div className="space-y-3 rounded-2xl bg-white/[0.04] p-4">
-        <div className="h-3 w-24 rounded-full bg-white/[0.06]" />
-        <div className="h-3 w-20 rounded-full bg-white/[0.06]" />
-        <div className="h-3 w-28 rounded-full bg-white/[0.06]" />
-      </div>
+    <div className="relative aspect-video h-full w-full overflow-hidden rounded-[24px]">
+      <Image
+        src={imageUrl}
+        alt={alt}
+        fill
+        className="object-cover transition-transform duration-500 hover:scale-105"
+      />
     </div>
   )
 }
