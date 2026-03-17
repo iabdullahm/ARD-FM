@@ -11,18 +11,18 @@ export function CtaSection() {
   const c = content[language].ctaSection;
 
   return (
-    <section id="cta" className="w-full py-20 md:py-32 bg-primary/5 mt-20">
+    <section id="cta" className="w-full py-20 md:py-32 bg-secondary mt-20">
       <div className="container mx-auto px-4 text-center fade-in-up">
-        <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight">
+        <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-secondary-foreground">
           {c.headline}
         </h2>
-        <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
+        <p className="mt-6 max-w-3xl mx-auto text-lg md:text-xl text-muted-foreground">
           {c.subheadline}
         </p>
-        <div className="mt-8">
-          <Button size="lg" className="group">
+        <div className="mt-10">
+          <Button size="lg" className="group text-lg py-8 px-10">
             {c.cta}
-            <ArrowLeft className={cn("h-5 w-5 transition-transform duration-300 group-hover:translate-x-1", language === 'ar' && "rotate-180 group-hover:-translate-x-1")} />
+            <ArrowLeft className={cn("h-6 w-6 transition-transform duration-300 group-hover:translate-x-1", language === 'ar' && "rotate-180 group-hover:-translate-x-1")} />
           </Button>
         </div>
       </div>
