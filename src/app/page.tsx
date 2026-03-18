@@ -773,6 +773,196 @@ function Header({
   )
 }
 
+function ModuleToggle({
+  title,
+  active,
+  onClick,
+  locked = false,
+}: {
+  title: string
+  active: boolean
+  onClick?: () => void
+  locked?: boolean
+}) {
+  return (
+    <div
+      onClick={!locked ? onClick : undefined}
+      className={`cursor-pointer rounded-2xl border p-4 transition ${
+        active
+          ? "border-orange-500 bg-orange-500/10"
+          : "border-white/10 bg-white/[0.04]"
+      } ${locked ? "opacity-60 cursor-not-allowed" : ""}`}
+    >
+      <div className="flex justify-between items-center">
+        <span className="text-white font-medium">{title}</span>
+        <div
+          className={`w-4 h-4 rounded ${
+            active ? "bg-orange-500" : "bg-gray-500"
+          }`}
+        />
+      </div>
+    </div>
+  )
+}
+
+function InteractivePricing({
+  isArabic,
+  align,
+}: {
+  isArabic: boolean
+  align: "rtl" | "ltr"
+}) {
+  const [units, setUnits] = useState(25);
+  const [billing, setBilling] = useState<"monthly" | "yearly">("monthly");
+  const [modules, setModules] = useState({
+    core: true,
+    operations: false,
+    finance: false,
+    insights: false,
+  });
+
+  const basePrice = units * 1;
+  const modulesPrice =
+    (modules.operations ? units * 0.5 : 0) +
+    (modules.finance ? units * 0.7 : 0) +
+    (modules.insights ? units * 0.3 : 0);
+  const monthlyTotal = Math.max(25, basePrice + modulesPrice);
+  const yearlyTotal = Math.round(monthlyTotal * 12 * 0.8);
+  const finalPrice =
+    billing === "yearly" ? yearlyTotal : monthlyTotal;
+
+  return (
+    <>
+      <SectionHeading
+        eyebrow={isArabic ? "الأسعار" : "Pricing"}
+        title={isArabic ? "باقات مرنة تناسب حجم أعمالك" : "Flexible plans for your operations"}
+        intro={
+          isArabic
+            ? "حرّك المؤشر واختر الموديلات لحساب تقديري لسعر باقتك."
+            : "Use the slider and select modules to estimate your plan's price."
+        }
+        align={align}
+      />
+
+      <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-3">
+        <div className="lg:col-span-2 space-y-8">
+          <div className="rounded-[28px] border border-white/10 bg-white/[0.04] p-6 backdrop-blur-xl">
+            <p className="text-sm uppercase tracking-[0.22em] text-orange-300/80">
+              {isArabic ? "عدد الوحدات" : "Number of units"}
+            </p>
+            <div className="mt-3 flex items-end gap-3">
+              <span className="text-5xl font-black text-white">{units}</span>
+              <span className="pb-1 text-sm text-slate-400">
+                {isArabic ? "وحدة" : "units"}
+              </span>
+            </div>
+            <input
+              type="range"
+              min={10}
+              max={300}
+              step={5}
+              value={units}
+              onChange={(e) => setUnits(Number(e.target.value))}
+              className="mt-4 h-2 w-full cursor-pointer appearance-none rounded-full bg-white/10 accent-orange-500"
+            />
+            <div className="mt-3 flex justify-between text-xs text-slate-400">
+              <span>10</span>
+              <span>75</span>
+              <span>150</span>
+              <span>225</span>
+              <span>300+</span>
+            </div>
+          </div>
+          
+          <div className="rounded-[28px] border border-white/10 bg-white/[0.04] p-6 backdrop-blur-xl">
+            <p className="text-sm uppercase tracking-[0.22em] text-orange-300/80">
+              {isArabic ? "اختر الموديلات" : "Select Modules"}
+            </p>
+            <div className="mt-6 grid gap-4 md:grid-cols-2">
+              <ModuleToggle
+                title={isArabic ? "النظام الأساسي" : "Core System"}
+                active={modules.core}
+                locked
+              />
+              <ModuleToggle
+                title={isArabic ? "العمليات" : "Operations"}
+                active={modules.operations}
+                onClick={() =>
+                  setModules({ ...modules, operations: !modules.operations })
+                }
+              />
+              <ModuleToggle
+                title={isArabic ? "المالية" : "Finance"}
+                active={modules.finance}
+                onClick={() =>
+                  setModules({ ...modules, finance: !modules.finance })
+                }
+              />
+              <ModuleToggle
+                title={isArabic ? "التقارير المتقدمة" : "Insights"}
+                active={modules.insights}
+                onClick={() =>
+                  setModules({ ...modules, insights: !modules.insights })
+                }
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-col rounded-[28px] border-2 border-orange-500/40 bg-orange-500/10 p-6 backdrop-blur-xl shadow-[0_20px_80px_rgba(249,115,22,.2)]">
+          <p className="text-sm uppercase tracking-[0.22em] text-orange-300/80">
+            {isArabic ? "التكلفة التقديرية" : "Estimated Cost"}
+          </p>
+
+          <div className="my-6">
+            <p className="text-4xl font-black text-orange-400">
+              {isArabic
+                ? `${finalPrice.toFixed(0)} ر.ع`
+                : `OMR ${finalPrice.toFixed(0)}`}
+            </p>
+            <p className="text-base font-medium text-white">
+              {isArabic
+                ? `/ ${billing === "yearly" ? "سنة" : "شهر"}`
+                : `/ ${billing === "yearly" ? "year" : "mo"}`}
+            </p>
+          </div>
+
+          <div className="inline-flex rounded-2xl border border-white/10 bg-white/[0.04] p-1 self-center">
+            <button
+              onClick={() => setBilling("monthly")}
+              className={`rounded-xl px-4 py-2 text-sm font-medium transition ${
+                billing === "monthly" ? "bg-orange-500 text-white" : "text-slate-300 hover:bg-white/[0.05]"
+              }`}
+            >
+              {isArabic ? "شهري" : "Monthly"}
+            </button>
+            <button
+              onClick={() => setBilling("yearly")}
+              className={`rounded-xl px-4 py-2 text-sm font-medium transition ${
+                billing === "yearly" ? "bg-orange-500 text-white" : "text-slate-300 hover:bg-white/[0.05]"
+              }`}
+            >
+              {isArabic ? "سنوي" : "Yearly"}
+            </button>
+          </div>
+          {billing === "yearly" && (
+            <div className="mt-4 text-center rounded-xl bg-orange-500/10 px-4 py-2 text-sm text-orange-300">
+              {isArabic ? "شامل خصم 20%!" : "Includes 20% discount!"}
+            </div>
+          )}
+
+          <div className="flex-grow"></div>
+
+          <button className="mt-8 w-full rounded-xl bg-orange-500 py-3 text-sm font-semibold text-white transition hover:bg-orange-400">
+             {isArabic ? "تواصل للمؤسسات" : "Contact Sales"}
+          </button>
+        </div>
+      </div>
+    </>
+  )
+}
+
+
 function SectionDivider() {
   return (
     <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -783,7 +973,6 @@ function SectionDivider() {
     </div>
   )
 }
-
 
 function BackgroundOrbs() {
   return (
@@ -860,7 +1049,7 @@ function FlowNode({ title, icon }: { title: string; icon: React.ReactNode }) {
 function CoreNode({ title }: { title: string }) {
   return (
     <motion.div
-      animate={{ scale: [1, 1.03, 1], boxShadow: ["0 0 0 rgba(249,115,22,0)", "0 0 40px rgba(249,115,22,0.16)", "0 0 0 rgba(249,115,22,0)"] }}
+      animate={{ boxShadow: ["0 0 0 rgba(249,115,22,0)", "0 0 40px rgba(249,115,22,0.16)", "0 0 0 rgba(249,115,22,0)"] }}
       transition={{ repeat: Infinity, duration: 3.5, ease: "easeInOut" }}
       className="rounded-[30px] border border-orange-400/20 bg-gradient-to-br from-orange-500/15 to-white/[0.04] p-8 text-center backdrop-blur-xl"
     >
@@ -902,190 +1091,5 @@ function Marquee({ isArabic }: { isArabic: boolean }) {
         ))}
       </motion.div>
     </div>
-  )
-}
-
-function InteractivePricing({
-  isArabic,
-  align,
-}: {
-  isArabic: boolean
-  align: "rtl" | "ltr"
-}) {
-  const [units, setUnits] = useState(25)
-
-  const basic = Math.max(25, units * 1)
-  const pro = Math.max(60, units * 2)
-  const enterpriseCustom = units >= 200
-
-  return (
-    <>
-      <SectionHeading
-        eyebrow={isArabic ? "الأسعار" : "Pricing"}
-        title={isArabic ? "باقات مرنة تناسب حجم أعمالك" : "Flexible plans for your operations"}
-        intro={
-          isArabic
-            ? "حرّك المؤشر حسب عدد الوحدات، وستتحدث الأسعار تلقائيًا."
-            : "Move the slider by unit count and pricing will update automatically."
-        }
-        align={align}
-      />
-
-      <div className="mt-8 rounded-[28px] border border-white/10 bg-white/[0.04] p-6 backdrop-blur-xl">
-        <div
-          className={`grid gap-6 lg:grid-cols-[0.42fr_1fr] lg:items-center ${
-            align === "rtl" ? "text-right" : "text-left"
-          }`}
-        >
-          <div>
-            <p className="text-sm uppercase tracking-[0.22em] text-orange-300/80">
-              {isArabic ? "عدد الوحدات" : "Number of units"}
-            </p>
-            <div className="mt-3 flex items-end gap-3">
-              <span className="text-5xl font-black text-white">{units}</span>
-              <span className="pb-1 text-sm text-slate-400">
-                {isArabic ? "وحدة" : "units"}
-              </span>
-            </div>
-            <p className="mt-3 text-sm leading-7 text-slate-300">
-              {isArabic
-                ? "الأسعار تقديرية وتتغير حسب حجم التشغيل والمتطلبات."
-                : "Indicative pricing that adjusts to portfolio size and operating needs."}
-            </p>
-          </div>
-
-          <div>
-            <input
-              type="range"
-              min={10}
-              max={300}
-              step={5}
-              value={units}
-              onChange={(e) => setUnits(Number(e.target.value))}
-              className="h-2 w-full cursor-pointer appearance-none rounded-full bg-white/10 accent-orange-500"
-            />
-            <div className="mt-3 flex justify-between text-xs text-slate-400">
-              <span>10</span>
-              <span>75</span>
-              <span>150</span>
-              <span>225</span>
-              <span>300+</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-12 grid gap-6 md:grid-cols-3">
-        <PricingCard
-          title={isArabic ? "الباقة الأساسية" : "Basic"}
-          price={isArabic ? `${basic} ر.ع / شهر` : `OMR ${basic} / mo`}
-          subtitle={
-            isArabic
-              ? "للشركات الصغيرة والبدايات المنظمة"
-              : "For smaller portfolios and growing teams"
-          }
-          features={
-            isArabic
-              ? ["إدارة العقود", "تتبع الإيجارات", "تقارير أساسية"]
-              : ["Contract management", "Rent tracking", "Basic reports"]
-          }
-          buttonLabel={isArabic ? "ابدأ بالأساسية" : "Choose Basic"}
-        />
-
-        <PricingCard
-          highlight
-          title={isArabic ? "الباقة الاحترافية" : "Pro"}
-          price={isArabic ? `${pro} ر.ع / شهر` : `OMR ${pro} / mo`}
-          subtitle={
-            isArabic
-              ? "الخيار الأنسب لمعظم العملاء"
-              : "The best fit for most clients"
-          }
-          features={
-            isArabic
-              ? ["كل مميزات الأساسية", "إدارة الصيانة", "تنبيهات ذكية", "تقارير متقدمة"]
-              : ["All basic features", "Maintenance module", "Smart alerts", "Advanced reports"]
-          }
-          buttonLabel={isArabic ? "ابدأ بالاحترافية" : "Choose Pro"}
-          badge={isArabic ? "الأكثر طلبًا" : "Most popular"}
-        />
-
-        <PricingCard
-          title={isArabic ? "باقات الشركات" : "Enterprise"}
-          price={
-            enterpriseCustom
-              ? isArabic
-                ? "تسعير مخصص"
-                : "Custom pricing"
-              : isArabic
-              ? "من 250 ر.ع / شهر"
-              : "From OMR 250 / mo"
-          }
-          subtitle={
-            isArabic
-              ? "للشركات الكبيرة والتخصيص المتقدم"
-              : "For larger operations and advanced customization"
-          }
-          features={
-            isArabic
-              ? ["عدد كبير من الوحدات", "دعم مخصص", "تخصيص النظام", "صلاحيات متقدمة"]
-              : ["High unit capacity", "Dedicated support", "Custom integrations", "Advanced permissions"]
-          }
-          buttonLabel={isArabic ? "تواصل للمؤسسات" : "Contact Sales"}
-        />
-      </div>
-    </>
-  )
-}
-
-function PricingCard({
-  title,
-  price,
-  subtitle,
-  features,
-  buttonLabel,
-  badge,
-  highlight = false,
-}: {
-  title: string
-  price: string
-  subtitle: string
-  features: string[]
-  buttonLabel: string
-  badge?: string
-  highlight?: boolean
-}) {
-  return (
-    <motion.div
-      whileHover={{ y: -8 }}
-      className={`relative rounded-[28px] border p-6 backdrop-blur-xl transition ${
-        highlight
-          ? "border-orange-500/40 bg-orange-500/10 shadow-[0_20px_80px_rgba(249,115,22,.2)]"
-          : "border-white/10 bg-white/[0.04]"
-      }`}
-    >
-      {badge ? (
-        <div className="absolute right-5 top-5 rounded-full bg-orange-500 px-3 py-1 text-xs font-semibold text-white">
-          {badge}
-        </div>
-      ) : null}
-
-      <h3 className="text-xl font-bold text-white">{title}</h3>
-      <p className="mt-3 text-3xl font-black text-orange-400">{price}</p>
-      <p className="mt-3 text-sm leading-7 text-slate-300">{subtitle}</p>
-
-      <ul className="mt-6 space-y-3 text-sm text-slate-300">
-        {features.map((feature, index) => (
-          <li key={index} className="flex items-center gap-2">
-            <span className="h-2 w-2 rounded-full bg-orange-400" />
-            {feature}
-          </li>
-        ))}
-      </ul>
-
-      <button className="mt-6 w-full rounded-xl bg-orange-500 py-3 text-sm font-semibold text-white transition hover:bg-orange-400">
-        {buttonLabel}
-      </button>
-    </motion.div>
   )
 }
