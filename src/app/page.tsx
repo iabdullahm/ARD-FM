@@ -609,41 +609,7 @@ export default function Page() {
       <SectionDivider />
       
       <section id="pricing" className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <SectionHeading
-          eyebrow={isArabic ? "الأسعار" : "Pricing"}
-          title={isArabic ? "باقات مرنة تناسب حجم أعمالك" : "Flexible plans for your operations"}
-          align={t.dir}
-        />
-
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
-          <PricingCard
-            isArabic={isArabic}
-            title={isArabic ? "الباقة الأساسية" : "Basic"}
-            price={isArabic ? "من 25 ر.ع" : "From OMR 25"}
-            features={isArabic
-              ? ["إدارة العقود", "تتبع الإيجارات", "تقارير أساسية"]
-              : ["Contract management", "Rent tracking", "Basic reports"]}
-          />
-
-          <PricingCard
-            highlight
-            isArabic={isArabic}
-            title={isArabic ? "الباقة الاحترافية" : "Pro"}
-            price={isArabic ? "من 60 ر.ع" : "From OMR 60"}
-            features={isArabic
-              ? ["كل مميزات الأساسية", "إدارة الصيانة", "تنبيهات ذكية", "تقارير متقدمة"]
-              : ["All basic features", "Maintenance module", "Smart alerts", "Advanced reports"]}
-          />
-
-          <PricingCard
-            isArabic={isArabic}
-            title={isArabic ? "باقات الشركات" : "Enterprise"}
-            price={isArabic ? "حسب الطلب" : "Custom pricing"}
-            features={isArabic
-              ? ["عدد غير محدود من الوحدات", "دعم مخصص", "تخصيص النظام"]
-              : ["Unlimited units", "Dedicated support", "Custom integrations"]}
-          />
-        </div>
+        <InteractivePricing isArabic={isArabic} align={t.dir} />
       </section>
 
       <SectionDivider />
@@ -726,7 +692,7 @@ function Header({
       <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
         <div className="rounded-2xl border border-white/10 bg-[#081426]/80 px-4 py-3 shadow-[0_12px_30px_rgba(2,6,23,.25)] backdrop-blur-xl">
           <div className="flex items-center justify-between gap-4">
-            <a href="#" className="relative h-8 w-20">
+            <a href="#" className="relative block h-8 w-20">
               <Image
                 src="https://storage.googleapis.com/ard3/ARD%20FM%20SYSTEM/logo%202.jpg"
                 alt="Rafid Logo"
@@ -939,41 +905,187 @@ function Marquee({ isArabic }: { isArabic: boolean }) {
   )
 }
 
+function InteractivePricing({
+  isArabic,
+  align,
+}: {
+  isArabic: boolean
+  align: "rtl" | "ltr"
+}) {
+  const [units, setUnits] = useState(25)
+
+  const basic = Math.max(25, units * 1)
+  const pro = Math.max(60, units * 2)
+  const enterpriseCustom = units >= 200
+
+  return (
+    <>
+      <SectionHeading
+        eyebrow={isArabic ? "الأسعار" : "Pricing"}
+        title={isArabic ? "باقات مرنة تناسب حجم أعمالك" : "Flexible plans for your operations"}
+        intro={
+          isArabic
+            ? "حرّك المؤشر حسب عدد الوحدات، وستتحدث الأسعار تلقائيًا."
+            : "Move the slider by unit count and pricing will update automatically."
+        }
+        align={align}
+      />
+
+      <div className="mt-8 rounded-[28px] border border-white/10 bg-white/[0.04] p-6 backdrop-blur-xl">
+        <div
+          className={`grid gap-6 lg:grid-cols-[0.42fr_1fr] lg:items-center ${
+            align === "rtl" ? "text-right" : "text-left"
+          }`}
+        >
+          <div>
+            <p className="text-sm uppercase tracking-[0.22em] text-orange-300/80">
+              {isArabic ? "عدد الوحدات" : "Number of units"}
+            </p>
+            <div className="mt-3 flex items-end gap-3">
+              <span className="text-5xl font-black text-white">{units}</span>
+              <span className="pb-1 text-sm text-slate-400">
+                {isArabic ? "وحدة" : "units"}
+              </span>
+            </div>
+            <p className="mt-3 text-sm leading-7 text-slate-300">
+              {isArabic
+                ? "الأسعار تقديرية وتتغير حسب حجم التشغيل والمتطلبات."
+                : "Indicative pricing that adjusts to portfolio size and operating needs."}
+            </p>
+          </div>
+
+          <div>
+            <input
+              type="range"
+              min={10}
+              max={300}
+              step={5}
+              value={units}
+              onChange={(e) => setUnits(Number(e.target.value))}
+              className="h-2 w-full cursor-pointer appearance-none rounded-full bg-white/10 accent-orange-500"
+            />
+            <div className="mt-3 flex justify-between text-xs text-slate-400">
+              <span>10</span>
+              <span>75</span>
+              <span>150</span>
+              <span>225</span>
+              <span>300+</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-12 grid gap-6 md:grid-cols-3">
+        <PricingCard
+          title={isArabic ? "الباقة الأساسية" : "Basic"}
+          price={isArabic ? `${basic} ر.ع / شهر` : `OMR ${basic} / mo`}
+          subtitle={
+            isArabic
+              ? "للشركات الصغيرة والبدايات المنظمة"
+              : "For smaller portfolios and growing teams"
+          }
+          features={
+            isArabic
+              ? ["إدارة العقود", "تتبع الإيجارات", "تقارير أساسية"]
+              : ["Contract management", "Rent tracking", "Basic reports"]
+          }
+          buttonLabel={isArabic ? "ابدأ بالأساسية" : "Choose Basic"}
+        />
+
+        <PricingCard
+          highlight
+          title={isArabic ? "الباقة الاحترافية" : "Pro"}
+          price={isArabic ? `${pro} ر.ع / شهر` : `OMR ${pro} / mo`}
+          subtitle={
+            isArabic
+              ? "الخيار الأنسب لمعظم العملاء"
+              : "The best fit for most clients"
+          }
+          features={
+            isArabic
+              ? ["كل مميزات الأساسية", "إدارة الصيانة", "تنبيهات ذكية", "تقارير متقدمة"]
+              : ["All basic features", "Maintenance module", "Smart alerts", "Advanced reports"]
+          }
+          buttonLabel={isArabic ? "ابدأ بالاحترافية" : "Choose Pro"}
+          badge={isArabic ? "الأكثر طلبًا" : "Most popular"}
+        />
+
+        <PricingCard
+          title={isArabic ? "باقات الشركات" : "Enterprise"}
+          price={
+            enterpriseCustom
+              ? isArabic
+                ? "تسعير مخصص"
+                : "Custom pricing"
+              : isArabic
+              ? "من 250 ر.ع / شهر"
+              : "From OMR 250 / mo"
+          }
+          subtitle={
+            isArabic
+              ? "للشركات الكبيرة والتخصيص المتقدم"
+              : "For larger operations and advanced customization"
+          }
+          features={
+            isArabic
+              ? ["عدد كبير من الوحدات", "دعم مخصص", "تخصيص النظام", "صلاحيات متقدمة"]
+              : ["High unit capacity", "Dedicated support", "Custom integrations", "Advanced permissions"]
+          }
+          buttonLabel={isArabic ? "تواصل للمؤسسات" : "Contact Sales"}
+        />
+      </div>
+    </>
+  )
+}
+
 function PricingCard({
   title,
   price,
+  subtitle,
   features,
+  buttonLabel,
+  badge,
   highlight = false,
-  isArabic
 }: {
   title: string
   price: string
+  subtitle: string
   features: string[]
-  highlight?: boolean,
-  isArabic: boolean
+  buttonLabel: string
+  badge?: string
+  highlight?: boolean
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: highlight ? 0.2 : 0.1 }}
-      className={`rounded-[28px] border ${highlight ? "border-orange-500/50 bg-white/[0.06]" : "border-white/10 bg-white/[0.04]"} p-8 backdrop-blur-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-orange-500/10`}
+      whileHover={{ y: -8 }}
+      className={`relative rounded-[28px] border p-6 backdrop-blur-xl transition ${
+        highlight
+          ? "border-orange-500/40 bg-orange-500/10 shadow-[0_20px_80px_rgba(249,115,22,.2)]"
+          : "border-white/10 bg-white/[0.04]"
+      }`}
     >
+      {badge ? (
+        <div className="absolute right-5 top-5 rounded-full bg-orange-500 px-3 py-1 text-xs font-semibold text-white">
+          {badge}
+        </div>
+      ) : null}
+
       <h3 className="text-xl font-bold text-white">{title}</h3>
-      <p className="mt-2 text-3xl font-black text-orange-400">{price}</p>
-      <p className="mt-1 text-sm text-slate-400">{isArabic ? "شهرياً" : "/ month"}</p>
-      <a href="#contact" className={`mt-6 block w-full rounded-xl py-3 text-center text-sm font-semibold transition-colors ${highlight ? "bg-orange-500 text-white hover:bg-orange-400" : "bg-white/[0.08] text-slate-100 hover:bg-white/[0.12]"}`}>
-        {highlight ? (isArabic ? "ابدأ الآن" : "Get Started") : (isArabic ? "اختر الباقة" : "Choose Plan")}
-      </a>
-      <ul className="mt-6 space-y-4 text-slate-300">
-        {features.map((feature) => (
-          <li key={feature} className="flex items-start gap-3">
-            <Check className="h-5 w-5 flex-shrink-0 text-emerald-400 mt-1" />
-            <span>{feature}</span>
+      <p className="mt-3 text-3xl font-black text-orange-400">{price}</p>
+      <p className="mt-3 text-sm leading-7 text-slate-300">{subtitle}</p>
+
+      <ul className="mt-6 space-y-3 text-sm text-slate-300">
+        {features.map((feature, index) => (
+          <li key={index} className="flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full bg-orange-400" />
+            {feature}
           </li>
         ))}
       </ul>
+
+      <button className="mt-6 w-full rounded-xl bg-orange-500 py-3 text-sm font-semibold text-white transition hover:bg-orange-400">
+        {buttonLabel}
+      </button>
     </motion.div>
   )
 }
