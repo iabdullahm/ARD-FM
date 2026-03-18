@@ -22,6 +22,11 @@ import {
   Wrench,
   X,
 } from "lucide-react"
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 
 type Lang = "ar" | "en"
 
@@ -322,7 +327,7 @@ const marqueeMetrics = [
   "12 Active Tickets",
 ]
 
-const problemIcons = [<FileX />, <TimerOff />, <Wrench />, <TrendingDown />]
+const problemIcons = [<FileX className="h-5 w-5" />, <TimerOff className="h-5 w-5" />, <Wrench className="h-5 w-5" />, <TrendingDown className="h-5 w-5" />]
 
 const featureImages = [
   'https://storage.googleapis.com/ard3/Rafid%20Website/contracts%20management.png',
@@ -542,24 +547,40 @@ export default function Page() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeading eyebrow={t.screenshots.eyebrow} title={t.screenshots.title} align={t.dir} />
         </div>
-        <div className="flex gap-6 overflow-x-auto pb-8 pt-12" style={{ scrollbarWidth: "none" }}>
-          <div className="min-w-[4rem] flex-shrink-0" />
-          {screenshotImages.map((img, index) => (
-            <motion.div
-              key={img.url + index}
-              whileHover={{ scale: 1.03, y: -5, rotate: index % 2 === 0 ? 1 : -1 }}
-              className="min-w-[40vw] flex-shrink-0 overflow-hidden rounded-2xl border border-white/10 shadow-2xl transition-all duration-300 hover:shadow-orange-500/20"
-            >
-              <Image
-                src={img.url}
-                alt={img.alt}
-                width={1600}
-                height={900}
-                className="h-full w-full object-cover"
-              />
-            </motion.div>
-          ))}
-           <div className="min-w-[4rem] flex-shrink-0" />
+        <div className="flex gap-6 overflow-x-auto px-4 pt-12 pb-8 sm:px-6 lg:px-8" style={{ scrollbarWidth: "none" }}>
+            {screenshotImages.map((img, index) => (
+            <Dialog key={img.url + index}>
+                <DialogTrigger asChild>
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.3 }}
+                    transition={{ delay: index * 0.1, duration: 0.5 }}
+                    whileHover={{ y: -5 }}
+                    className="group relative min-w-[300px] md:min-w-[400px] aspect-video flex-shrink-0 cursor-pointer overflow-hidden rounded-2xl border border-white/10 shadow-lg transition-all duration-300 hover:shadow-orange-500/10"
+                >
+                    <Image
+                    src={img.url}
+                    alt={img.alt}
+                    width={800}
+                    height={450}
+                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/10 transition-colors group-hover:from-black/40" />
+                    <h3 className="absolute bottom-4 left-4 right-4 text-lg font-bold text-white opacity-90 transition-opacity group-hover:opacity-100">{t.screenshots.cards[index]}</h3>
+                </motion.div>
+                </DialogTrigger>
+                <DialogContent className="max-w-6xl p-2 bg-black/80 border-white/10 backdrop-blur-lg">
+                <Image
+                    src={img.url}
+                    alt={img.alt}
+                    width={1920}
+                    height={1080}
+                    className="w-full h-auto rounded-md object-contain"
+                />
+                </DialogContent>
+            </Dialog>
+            ))}
         </div>
       </section>
       
