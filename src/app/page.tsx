@@ -318,18 +318,20 @@ const marqueeMetrics = [
   "12 Active Tickets",
 ]
 
+const problemIcons = [<FileX />, <TimerOff />, <Wrench />, <TrendingDown />]
+
 const featureImages = [
   'https://storage.googleapis.com/ard3/Rafid%20Website/contracts%20management.png',
-  'https://storage.googleapis.com/ard3/Rafid%20Website/Rafid-dashboard.png', // Placeholder for "Rent collection"
+  'https://storage.googleapis.com/ard3/Rafid%20Website/Rafid-dashboard.png',
   'https://storage.googleapis.com/ard3/Rafid%20Website/maintenance.png',
-  'https://storage.googleapis.com/ard3/Rafid%20Website/Rafid-dashboard.png', // Placeholder for "Reporting"
+  'https://storage.googleapis.com/ard3/Rafid%20Website/Rafid-dashboard.png',
 ]
 
 const screenshotImages = [
   { url: 'https://storage.googleapis.com/ard3/Rafid%20Website/Rafid-dashboard.png', alt: 'Rafid Dashboard' },
   { url: 'https://storage.googleapis.com/ard3/Rafid%20Website/contracts%20management.png', alt: 'Rafid Contracts Management' },
   { url: 'https://storage.googleapis.com/ard3/Rafid%20Website/maintenance.png', alt: 'Rafid Maintenance' },
-  { url: 'https://storage.googleapis.com/ard3/Rafid%20Website/Rafid-dashboard.png', alt: 'Rafid Dashboard' }, // Repeating for 4th card
+  { url: 'https://storage.googleapis.com/ard3/Rafid%20Website/Rafid-dashboard.png', alt: 'Rafid Dashboard' },
 ]
 
 
@@ -357,8 +359,6 @@ export default function Page() {
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [isArabic])
-
-  const problemIcons = [<FileX />, <TimerOff />, <Wrench />, <TrendingDown />]
 
   return (
     <main
@@ -445,6 +445,8 @@ export default function Page() {
         <Marquee isArabic={isArabic} />
       </section>
 
+      <SectionDivider />
+
       <section className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <SectionHeading eyebrow={t.problems.eyebrow} title={t.problems.title} intro={t.problems.intro} align={t.dir} />
         <div className="mt-12 grid auto-rows-[160px] gap-5 md:grid-cols-6">
@@ -455,8 +457,9 @@ export default function Page() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
               transition={{ delay: index * 0.08, duration: 0.5 }}
+              whileHover={{ y: -6, boxShadow: "0 10px 30px rgba(249, 115, 22, 0.1)" }}
               className={[
-                "group rounded-[28px] border border-white/10 bg-white/[0.04] p-6 backdrop-blur-md transition-all duration-300 hover:-translate-y-1.5 hover:bg-white/[0.06] hover:shadow-2xl hover:shadow-orange-500/10",
+                "group rounded-[28px] border border-white/10 bg-white/[0.04] p-6 backdrop-blur-md transition-all duration-300",
                 index === 0 ? "md:col-span-3" : "",
                 index === 1 ? "md:col-span-2" : "",
                 index === 2 ? "md:col-span-2" : "",
@@ -474,6 +477,8 @@ export default function Page() {
           ))}
         </div>
       </section>
+
+      <SectionDivider />
 
       <section className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <SectionHeading eyebrow={t.solution.eyebrow} title={t.solution.title} intro={t.solution.intro} align={t.dir} />
@@ -497,6 +502,8 @@ export default function Page() {
           </div>
         </div>
       </section>
+      
+      <SectionDivider />
 
       <section id="features" className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <SectionHeading eyebrow={t.features.eyebrow} title={t.features.title} align={t.dir} />
@@ -525,6 +532,8 @@ export default function Page() {
         </div>
       </section>
 
+      <SectionDivider />
+
       <section id="system" className="relative w-full overflow-hidden py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeading eyebrow={t.screenshots.eyebrow} title={t.screenshots.title} align={t.dir} />
@@ -549,6 +558,8 @@ export default function Page() {
            <div className="min-w-[4rem] flex-shrink-0" />
         </div>
       </section>
+      
+      <SectionDivider />
 
       <section id="why" className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
@@ -715,6 +726,18 @@ function Header({
   )
 }
 
+function SectionDivider() {
+  return (
+    <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="relative h-16">
+        <div className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-gradient-to-r from-transparent via-white/12 to-transparent" />
+        <div className="absolute left-1/2 top-1/2 h-24 w-40 -translate-x-1/2 -translate-y-1/2 rounded-full bg-orange-500/8 blur-3xl" />
+      </div>
+    </div>
+  )
+}
+
+
 function BackgroundOrbs() {
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -722,6 +745,32 @@ function BackgroundOrbs() {
       <div className="absolute right-[-10%] top-[10rem] h-[24rem] w-[24rem] rounded-full bg-orange-500/10 blur-3xl" />
       <div className="absolute bottom-[10rem] left-[35%] h-[20rem] w-[20rem] rounded-full bg-indigo-500/10 blur-3xl" />
     </div>
+  )
+}
+
+function DashboardCard({
+  icon,
+  label,
+  value,
+  delta,
+}: {
+  icon: React.ReactNode
+  label: string
+  value: string
+  delta: string
+}) {
+  return (
+    <motion.div
+      whileHover={{ y: -4 }}
+      className="rounded-2xl border border-white/10 bg-white/[0.04] p-4"
+    >
+      <div className="flex items-start justify-between">
+        <div className="rounded-xl bg-white/[0.06] p-2 text-orange-300">{icon}</div>
+        <span className="text-xs text-emerald-300">{delta}</span>
+      </div>
+      <p className="mt-4 text-sm text-slate-400">{label}</p>
+      <p className="mt-1 text-2xl font-bold text-white">{value}</p>
+    </motion.div>
   )
 }
 
