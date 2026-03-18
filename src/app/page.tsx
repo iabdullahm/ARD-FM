@@ -7,6 +7,7 @@ import {
   ArrowUpRight,
   BarChart3,
   Building2,
+  FileX,
   Globe,
   Hammer,
   LayoutDashboard,
@@ -14,6 +15,8 @@ import {
   Receipt,
   ShieldCheck,
   Sparkles,
+  TimerOff,
+  TrendingDown,
   Wallet,
   Wrench,
   X,
@@ -343,6 +346,20 @@ export default function Page() {
 
   const isArabic = lang === "ar"
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const heroDashboard = document.getElementById("hero-dashboard")
+      if (heroDashboard) {
+        const y = window.scrollY
+        heroDashboard.style.transform = `translateY(${y * -0.1}px) rotate(${isArabic ? -2 : 2}deg)`
+      }
+    }
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [isArabic])
+
+  const problemIcons = [<FileX />, <TimerOff />, <Wrench />, <TrendingDown />]
+
   return (
     <main
       dir={t.dir}
@@ -403,6 +420,7 @@ export default function Page() {
           </motion.div>
 
           <motion.div
+            id="hero-dashboard"
             initial={{ opacity: 0, scale: 0.95, rotate: isArabic ? -3 : 3 }}
             animate={{ opacity: 1, scale: 1, rotate: isArabic ? -2 : 2 }}
             transition={{ duration: 0.9, ease: "easeOut" }}
@@ -423,7 +441,7 @@ export default function Page() {
         </div>
       </section>
 
-      <section className="relative mx-auto max-w-7xl px-4 pb-8 sm:px-6 lg:px-8">
+      <section className="relative mx-auto max-w-7xl px-4 pb-8 sm:px-6 lg:px-8 marquee-container">
         <Marquee isArabic={isArabic} />
       </section>
 
@@ -438,7 +456,7 @@ export default function Page() {
               viewport={{ once: true, amount: 0.2 }}
               transition={{ delay: index * 0.08, duration: 0.5 }}
               className={[
-                "group rounded-[28px] border border-white/10 bg-white/[0.04] p-6 backdrop-blur-md transition hover:-translate-y-1 hover:bg-white/[0.06]",
+                "group rounded-[28px] border border-white/10 bg-white/[0.04] p-6 backdrop-blur-md transition-all duration-300 hover:-translate-y-1.5 hover:bg-white/[0.06] hover:shadow-2xl hover:shadow-orange-500/10",
                 index === 0 ? "md:col-span-3" : "",
                 index === 1 ? "md:col-span-2" : "",
                 index === 2 ? "md:col-span-2" : "",
@@ -448,7 +466,7 @@ export default function Page() {
             >
               <div className="flex h-full flex-col justify-between">
                 <div className="rounded-2xl bg-orange-500/10 p-2 text-orange-300 w-fit">
-                  <Building2 className="h-5 w-5" />
+                  {problemIcons[index]}
                 </div>
                 <p className="text-lg font-medium leading-8 text-slate-100">{item}</p>
               </div>
@@ -507,32 +525,28 @@ export default function Page() {
         </div>
       </section>
 
-      <section id="system" className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <SectionHeading eyebrow={t.screenshots.eyebrow} title={t.screenshots.title} align={t.dir} />
-        <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-          {t.screenshots.cards.map((card, index) => (
+      <section id="system" className="relative w-full overflow-hidden py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeading eyebrow={t.screenshots.eyebrow} title={t.screenshots.title} align={t.dir} />
+        </div>
+        <div className="flex gap-6 overflow-x-auto pb-8 pt-12" style={{ scrollbarWidth: "none" }}>
+          <div className="min-w-[4rem] flex-shrink-0" />
+          {screenshotImages.map((img, index) => (
             <motion.div
-              key={card}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.08, duration: 0.5 }}
-              className="group rounded-[28px] border border-white/10 bg-white/[0.04] p-4 backdrop-blur-xl"
+              key={img.url + index}
+              whileHover={{ scale: 1.03, y: -5, rotate: index % 2 === 0 ? 1 : -1 }}
+              className="min-w-[40vw] flex-shrink-0 overflow-hidden rounded-2xl border border-white/10 shadow-2xl transition-all duration-300 hover:shadow-orange-500/20"
             >
-              <div className="rounded-[24px] border border-white/10 bg-[#0d1d35] p-4 transition duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_20px_60px_rgba(249,115,22,.12)]">
-                <div className="mb-4 h-44 overflow-hidden rounded-[18px]">
-                  <Image
-                    src={screenshotImages[index].url}
-                    alt={screenshotImages[index].alt}
-                    width={800}
-                    height={450}
-                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                </div>
-                <p className="text-base font-semibold text-white">{card}</p>
-              </div>
+              <Image
+                src={img.url}
+                alt={img.alt}
+                width={1600}
+                height={900}
+                className="h-full w-full object-cover"
+              />
             </motion.div>
           ))}
+           <div className="min-w-[4rem] flex-shrink-0" />
         </div>
       </section>
 
@@ -560,19 +574,21 @@ export default function Page() {
         <div className="relative overflow-hidden rounded-[36px] border border-white/10 bg-gradient-to-br from-[#0f1f38] via-[#0a1528] to-[#0b1322] p-8 shadow-[0_30px_100px_rgba(2,6,23,.4)] lg:p-12">
           <div className="absolute -right-24 top-8 h-56 w-56 rounded-full bg-orange-500/10 blur-3xl" />
           <div className="absolute bottom-0 left-0 h-40 w-40 rounded-full bg-sky-500/10 blur-3xl" />
-          <div className="relative grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
+          <div className="relative z-10 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
             <div className={isArabic ? "text-right" : "text-left"}>
               <p className="text-sm uppercase tracking-[0.22em] text-orange-300/80">Rafid</p>
               <h2 className="mt-3 text-3xl font-black text-white sm:text-4xl">{t.cta.title}</h2>
               <p className="mt-4 max-w-2xl text-base leading-8 text-slate-300">{t.cta.body}</p>
             </div>
             <div className="flex flex-wrap gap-4">
-              <a
+              <motion.a
+                 animate={{ scale: [1, 1.03, 1] }}
+                 transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
                 href="mailto:info@rafid.om"
-                className="inline-flex items-center gap-2 rounded-xl bg-orange-500 px-6 py-3.5 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-orange-400"
+                className="inline-flex items-center gap-2 rounded-xl bg-orange-500 px-6 py-3.5 text-sm font-semibold text-white shadow-[0_0_30px_rgba(249,115,22,.2)] transition hover:-translate-y-0.5 hover:bg-orange-400"
               >
                 {t.cta.primary}
-              </a>
+              </motion.a>
               <a
                 href="https://wa.me/96892975614"
                 target="_blank"
@@ -748,7 +764,7 @@ function FlowNode({ title, icon }: { title: string; icon: React.ReactNode }) {
 function CoreNode({ title }: { title: string }) {
   return (
     <motion.div
-      animate={{ boxShadow: ["0 0 0 rgba(249,115,22,0)", "0 0 40px rgba(249,115,22,0.16)", "0 0 0 rgba(249,115,22,0)"] }}
+      animate={{ scale: [1, 1.03, 1], boxShadow: ["0 0 0 rgba(249,115,22,0)", "0 0 40px rgba(249,115,22,0.16)", "0 0 0 rgba(249,115,22,0)"] }}
       transition={{ repeat: Infinity, duration: 3.5, ease: "easeInOut" }}
       className="rounded-[30px] border border-orange-400/20 bg-gradient-to-br from-orange-500/15 to-white/[0.04] p-8 text-center backdrop-blur-xl"
     >
