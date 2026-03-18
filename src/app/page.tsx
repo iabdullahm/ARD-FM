@@ -616,7 +616,14 @@ export default function Page() {
       <footer className="border-t border-white/10">
         <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-8 text-sm text-slate-400 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
           <div>
-            <p className="font-semibold text-slate-200">Rafid</p>
+            <a href="#" className="relative block h-10 w-24">
+              <Image
+                src="https://storage.googleapis.com/ard3/ARD%20FM%20SYSTEM/logo%202.jpg"
+                alt="Rafid Logo"
+                fill
+                className="object-contain"
+              />
+            </a>
             <p className="mt-1">{t.footer.address}</p>
           </div>
           <p>{t.footer.rights}</p>
@@ -651,8 +658,14 @@ function Header({
       <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
         <div className="rounded-2xl border border-white/10 bg-[#081426]/80 px-4 py-3 shadow-[0_12px_30px_rgba(2,6,23,.25)] backdrop-blur-xl">
           <div className="flex items-center justify-between gap-4">
-            <a href="#" className="text-lg font-black tracking-tight text-orange-400">
-              Rafid
+            <a href="#" className="relative h-8 w-20">
+              <Image
+                src="https://storage.googleapis.com/ard3/ARD%20FM%20SYSTEM/logo%202.jpg"
+                alt="Rafid Logo"
+                fill
+                className="object-contain"
+                priority
+              />
             </a>
 
             <nav className="hidden items-center gap-7 text-sm text-slate-300 lg:flex">
