@@ -7,6 +7,7 @@ import {
   ArrowUpRight,
   BarChart3,
   Building2,
+  Check,
   FileX,
   Globe,
   Hammer,
@@ -30,6 +31,7 @@ type Dictionary = {
     features: string
     system: string
     why: string
+    pricing: string
     contact: string
     requestDemo: string
     switchLabel: string
@@ -108,6 +110,7 @@ const copy: Record<Lang, Dictionary> = {
       features: "المميزات",
       system: "النظام",
       why: "لماذا رافد",
+      pricing: "الأسعار",
       contact: "تواصل",
       requestDemo: "اطلب عرض",
       switchLabel: "EN",
@@ -213,6 +216,7 @@ const copy: Record<Lang, Dictionary> = {
       features: "Features",
       system: "System",
       why: "Why Rafid",
+      pricing: "Pricing",
       contact: "Contact",
       requestDemo: "Request Demo",
       switchLabel: "AR",
@@ -581,6 +585,48 @@ export default function Page() {
         </div>
       </section>
 
+      <SectionDivider />
+      
+      <section id="pricing" className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <SectionHeading
+          eyebrow={isArabic ? "الأسعار" : "Pricing"}
+          title={isArabic ? "باقات مرنة تناسب حجم أعمالك" : "Flexible plans for your operations"}
+          align={t.dir}
+        />
+
+        <div className="mt-12 grid gap-6 md:grid-cols-3">
+          <PricingCard
+            isArabic={isArabic}
+            title={isArabic ? "الباقة الأساسية" : "Basic"}
+            price={isArabic ? "من 25 ر.ع" : "From OMR 25"}
+            features={isArabic
+              ? ["إدارة العقود", "تتبع الإيجارات", "تقارير أساسية"]
+              : ["Contract management", "Rent tracking", "Basic reports"]}
+          />
+
+          <PricingCard
+            highlight
+            isArabic={isArabic}
+            title={isArabic ? "الباقة الاحترافية" : "Pro"}
+            price={isArabic ? "من 60 ر.ع" : "From OMR 60"}
+            features={isArabic
+              ? ["كل مميزات الأساسية", "إدارة الصيانة", "تنبيهات ذكية", "تقارير متقدمة"]
+              : ["All basic features", "Maintenance module", "Smart alerts", "Advanced reports"]}
+          />
+
+          <PricingCard
+            isArabic={isArabic}
+            title={isArabic ? "باقات الشركات" : "Enterprise"}
+            price={isArabic ? "حسب الطلب" : "Custom pricing"}
+            features={isArabic
+              ? ["عدد غير محدود من الوحدات", "دعم مخصص", "تخصيص النظام"]
+              : ["Unlimited units", "Dedicated support", "Custom integrations"]}
+          />
+        </div>
+      </section>
+
+      <SectionDivider />
+
       <section id="contact" className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <div className="relative overflow-hidden rounded-[36px] border border-white/10 bg-gradient-to-br from-[#0f1f38] via-[#0a1528] to-[#0b1322] p-8 shadow-[0_30px_100px_rgba(2,6,23,.4)] lg:p-12">
           <div className="absolute -right-24 top-8 h-56 w-56 rounded-full bg-orange-500/10 blur-3xl" />
@@ -650,6 +696,7 @@ function Header({
     { href: "#features", label: t.nav.features },
     { href: "#system", label: t.nav.system },
     { href: "#why", label: t.nav.why },
+    { href: "#pricing", label: t.nav.pricing },
     { href: "#contact", label: t.nav.contact },
   ]
 
@@ -868,5 +915,44 @@ function Marquee({ isArabic }: { isArabic: boolean }) {
         ))}
       </motion.div>
     </div>
+  )
+}
+
+function PricingCard({
+  title,
+  price,
+  features,
+  highlight = false,
+  isArabic
+}: {
+  title: string
+  price: string
+  features: string[]
+  highlight?: boolean,
+  isArabic: boolean
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: highlight ? 0.2 : 0.1 }}
+      className={`rounded-[28px] border ${highlight ? "border-orange-500/50 bg-white/[0.06]" : "border-white/10 bg-white/[0.04]"} p-8 backdrop-blur-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-orange-500/10`}
+    >
+      <h3 className="text-xl font-bold text-white">{title}</h3>
+      <p className="mt-2 text-3xl font-black text-orange-400">{price}</p>
+      <p className="mt-1 text-sm text-slate-400">{isArabic ? "شهرياً" : "/ month"}</p>
+      <a href="#contact" className={`mt-6 block w-full rounded-xl py-3 text-center text-sm font-semibold transition-colors ${highlight ? "bg-orange-500 text-white hover:bg-orange-400" : "bg-white/[0.08] text-slate-100 hover:bg-white/[0.12]"}`}>
+        {highlight ? (isArabic ? "ابدأ الآن" : "Get Started") : (isArabic ? "اختر الباقة" : "Choose Plan")}
+      </a>
+      <ul className="mt-6 space-y-4 text-slate-300">
+        {features.map((feature) => (
+          <li key={feature} className="flex items-start gap-3">
+            <Check className="h-5 w-5 flex-shrink-0 text-emerald-400 mt-1" />
+            <span>{feature}</span>
+          </li>
+        ))}
+      </ul>
+    </motion.div>
   )
 }
