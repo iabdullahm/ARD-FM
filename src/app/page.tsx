@@ -11,7 +11,11 @@ import {
   Hammer,
   LayoutDashboard,
   Menu,
+  Receipt,
+  ShieldCheck,
   Sparkles,
+  Wallet,
+  Wrench,
   X,
 } from "lucide-react"
 
@@ -570,7 +574,9 @@ export default function Page() {
                 {t.cta.primary}
               </a>
               <a
-                href="tel:+96800000000"
+                href="https://wa.me/96892975614"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-6 py-3.5 text-sm font-semibold text-slate-100 backdrop-blur-md transition hover:-translate-y-0.5 hover:bg-white/[0.08]"
               >
                 {t.cta.secondary}
