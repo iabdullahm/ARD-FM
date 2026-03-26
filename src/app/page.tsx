@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import { useEffect, useMemo, useState } from "react"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import {
   ArrowUpRight,
   BarChart3,
@@ -21,12 +21,19 @@ import {
   Wallet,
   Wrench,
   X,
+  MessageCircle,
+  Cloud,
+  Headset,
+  MapPin,
+  Settings,
+  Star
 } from "lucide-react"
 import {
   Dialog,
   DialogContent,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { PricingSection } from "@/components/sections/PricingSection"
 
 type Lang = "ar" | "en"
 
@@ -38,7 +45,7 @@ type Dictionary = {
     why: string
     pricing: string
     contact: string
-    requestDemo: string
+    demo: string
     switchLabel: string
   }
   hero: {
@@ -51,15 +58,10 @@ type Dictionary = {
     metric2: string
     metric3: string
   }
-  dashboard: {
+  socialProof: {
+    eyebrow: string
     title: string
-    contracts: string
-    revenue: string
-    maintenance: string
-    alerts: string
-    occupancy: string
-    collections: string
-    pending: string
+    stats: { value: string; label: string }[]
   }
   problems: {
     eyebrow: string
@@ -77,7 +79,7 @@ type Dictionary = {
     reports: string
     core: string
   }
-  features: {
+  outcomes: {
     eyebrow: string
     title: string
     items: {
@@ -89,12 +91,12 @@ type Dictionary = {
   screenshots: {
     eyebrow: string
     title: string
-    cards: string[]
+    cards: { title: string; desc: string }[]
   }
   why: {
     eyebrow: string
     title: string
-    lines: string[]
+    items: { label: string; desc: string }[]
   }
   cta: {
     title: string
@@ -105,6 +107,7 @@ type Dictionary = {
   footer: {
     address: string
     rights: string
+    links: { label: string; href: string }[]
   }
 }
 
@@ -112,34 +115,32 @@ const copy: Record<Lang, Dictionary> = {
   ar: {
     dir: "rtl",
     nav: {
-      features: "المميزات",
+      features: "النتائج",
       system: "النظام",
-      why: "لماذا رافد",
+      why: "لماذا رافد؟",
       pricing: "الأسعار",
-      contact: "تواصل",
-      requestDemo: "اطلب عرض",
+      contact: "تواصل معنا",
+      demo: "عرض حي (Live Demo)",
       switchLabel: "EN",
     },
     hero: {
       badge: "منصة إدارة العقارات والمرافق",
-      title: "إدارة عقاراتك بذكاء... مع رافد",
-      subtitle:
-        "نظام متكامل لإدارة العقود والإيجارات والصيانة والتقارير في تجربة واحدة واضحة وسريعة وقابلة للتوسع.",
-      ctaPrimary: "اطلب عرض",
-      ctaSecondary: "شاهد النظام",
+      title: "نظام متكامل لإدارة المنشآت والعقارات — من التشغيل إلى المالية في منصة واحدة",
+      subtitle: "تحكم كامل في العمليات، الصيانة، التأجير، والفوترة — بدون تعقيد.",
+      ctaPrimary: "🚀 ابدأ تجربة مجانية",
+      ctaSecondary: "📊 احصل على عرض مخصص",
       metric1: "500+ وحدة مُدارة",
       metric2: "95% نسبة إشغال",
       metric3: "1M+ معاملات سنوية",
     },
-    dashboard: {
-      title: "لوحة تحكم تشغيلية",
-      contracts: "العقود",
-      revenue: "الإيرادات",
-      maintenance: "الصيانة",
-      alerts: "التنبيهات",
-      occupancy: "الإشغال",
-      collections: "التحصيل",
-      pending: "طلبات معلقة",
+    socialProof: {
+      eyebrow: "شركاء النجاح",
+      title: "أرقام تثبت قوة وفاعلية رافد في السوق",
+      stats: [
+        { value: "+50", label: "شركة تستخدم رافد" },
+        { value: "+10,000", label: "وحدة مُدارة عبر النظام" },
+        { value: "99.9%", label: "جاهزية واستقرار Uptime" }
+      ]
     },
     problems: {
       eyebrow: "التحدي",
@@ -164,88 +165,98 @@ const copy: Record<Lang, Dictionary> = {
       reports: "التقارير",
       core: "محرك رافد",
     },
-    features: {
-      eyebrow: "المميزات",
-      title: "مصمم ليخدم الإدارة التشغيلية اليومية، لا مجرد العرض الجميل.",
+    outcomes: {
+      eyebrow: "النتائج",
+      title: "مصمم ليخدم الإدارة التشغيلية اليومية بتحقيق نتائج فورية.",
       items: [
         {
-          title: "إدارة العقود والملفات",
-          body: "هيكلة موحدة للعقود والتواريخ والتنبيهات والمرفقات في واجهة واحدة سهلة المراجعة.",
-          stat: "128 عقد نشط",
+          title: "تقليل وقت إدارة الصيانة بنسبة 40%",
+          body: "عبر أتمتة دورة حياة التذكرة من تقديم الطلب، لتعيين الفني، وحتى الإغلاق والتقييم، بدون اتصالات ورسائل.",
+          stat: "سرعة في الإنجاز",
         },
         {
-          title: "تحصيل الإيجارات والمتابعة",
-          body: "متابعة الاستحقاقات والتحصيلات والتنبيهات المالية من خلال لوحات مرئية سريعة الفهم.",
-          stat: "45,200 ر.ع",
+          title: "تقارير مالية فورية بدون Excel",
+          body: "استغنِ عن جداول الإكسيل. راقب الإيرادات، التحصيلات، وسندات القبض في لوحات حية وبضغطة زر.",
+          stat: "تقارير لحظية",
         },
         {
-          title: "إدارة الصيانة بوضوح",
-          body: "تسجيل الطلب، تعيينه، متابعة حالته، وإغلاقه بسجل زمني واضح ومسؤوليات محددة.",
-          stat: "12 طلب صيانة",
+          title: "متابعة العقود وتجديدها تلقائيًا",
+          body: "لا مزيد من العقود المنتهية بلا تنبيه. النظام يخبرك مقدماً للإبقاء على الإشغال عالياً وتأمين الإيرادات.",
+          stat: "أتمتة التأجير",
         },
         {
-          title: "تقارير تدعم القرار",
-          body: "قراءة مباشرة لمؤشرات الإشغال والتحصيل والتنبيهات والعمليات الحرجة لسرعة اتخاذ القرار.",
-          stat: "95% إشغال",
+          title: "رؤية مركزية للملاك والإدارة",
+          body: "وفر لأصحاب القرار ملخصات واضحة عن حالة الأصول والعمليات لتمكين تسريع عجلة التوسع والنمو.",
+          stat: "منصة الملاك",
         },
       ],
     },
     screenshots: {
       eyebrow: "النظام",
       title: "لقطات منتج تعطي الثقة قبل الاجتماع الأول.",
-      cards: ["لوحة تنفيذية", "تفاصيل عقد", "إدارة الصيانة", "تقارير المؤشرات"],
+      cards: [
+        { title: "لوحة التحكم الذكية", desc: "راقب كل عملياتك لحظيًا في شاشة واحدة توفر لك الأهم بنظرة سريعة." },
+        { title: "تفاصيل العقود المدمجة", desc: "نظرة شاملة لكل عقد مع الدفعات وتنبيهات الاستحقاق بدون جهد." },
+        { title: "متابعة أوامر الصيانة", desc: "تخصيص المهام ومراقبة الأداء لكل فني لتحسين الجودة بشكل ملموس." },
+        { title: "التقارير التحليلية", desc: "معلومات عميقة لتحديد نقاط قوة وضعف المحفظة العقارية بدقة." }
+      ],
     },
     why: {
-      eyebrow: "لماذا رافد",
-      title: "منتج عملي لشركات تدير أصولًا حقيقية.",
-      lines: [
-        "تحكم كامل.",
-        "رؤية واضحة.",
-        "قرارات أسرع.",
+      eyebrow: "لماذا رافد؟",
+      title: "أسس تقنية صلبة تخدم طموحك.",
+      items: [
+        { label: "نظام سحابي بالكامل", desc: "ادخل لنظامك من أي مكان، بلا سيرفرات معقدة أو عمليات تثبيت مكلفة." },
+        { label: "مناسب للسوق الخليجي", desc: "مصمم لفهم طبيعة العقود والقوانين والتشريعات المحلية." },
+        { label: "دعم عربي 100%", desc: "فريق فني يتحدث لغتك ومتاح لخدمتك متى ما احتجت." },
+        { label: "قابل للتخصيص", desc: "يتماشى مع هيكلة شركتك والموديلات التي تلبي متطلباتك الدقيقة." },
       ],
     },
     cta: {
       title: "ابدأ الآن مع رافد",
-      body: "اطلب عرضًا مخصصًا وشاهد كيف تتحول الإدارة التشغيلية من التشتت إلى السيطرة.",
-      primary: "احجز عرضًا",
-      secondary: "تحدث معنا",
+      body: "اطلب عرضًا مخصصًا أو ابدأ تجربة مجانية وشاهد كيف تتحول الإدارة التشغيلية من التشتت إلى السيطرة.",
+      primary: "احجز عرضًا حيًا (Demo)",
+      secondary: "تواصل عبر واتساب",
     },
     footer: {
       address: "مسقط، سلطنة عمان",
       rights: "جميع الحقوق محفوظة لرافد",
+      links: [
+        { label: "الدعم الفني", href: "#" },
+        { label: "سياسة الخصوصية", href: "#" },
+        { label: "تواصل معنا", href: "#contact" },
+        { label: "عن الشركة", href: "#" }
+      ]
     },
   },
   en: {
     dir: "ltr",
     nav: {
-      features: "Features",
+      features: "Outcomes",
       system: "System",
-      why: "Why Rafid",
+      why: "Why Rafid?",
       pricing: "Pricing",
       contact: "Contact",
-      requestDemo: "Request Demo",
+      demo: "Live Demo",
       switchLabel: "AR",
     },
     hero: {
       badge: "Property & facility management platform",
-      title: "Manage your properties intelligently with Rafid",
-      subtitle:
-        "A unified system for contracts, rent collection, maintenance, and reporting in one clear, scalable experience.",
-      ctaPrimary: "Request Demo",
-      ctaSecondary: "View System",
+      title: "An integrated facility and property management system — from operations to finance in one platform",
+      subtitle: "Full control over operations, maintenance, leasing, and billing — without complexity.",
+      ctaPrimary: "🚀 Start Free Trial",
+      ctaSecondary: "📊 Get Custom Quote",
       metric1: "500+ managed units",
       metric2: "95% occupancy",
       metric3: "1M+ yearly transactions",
     },
-    dashboard: {
-      title: "Operational dashboard",
-      contracts: "Contracts",
-      revenue: "Revenue",
-      maintenance: "Maintenance",
-      alerts: "Alerts",
-      occupancy: "Occupancy",
-      collections: "Collections",
-      pending: "Pending requests",
+    socialProof: {
+      eyebrow: "Success Partners",
+      title: "Numbers that prove Rafid's effectiveness",
+      stats: [
+        { value: "+50", label: "Companies using Rafid" },
+        { value: "+10,000", label: "Managed Units" },
+        { value: "99.9%", label: "Uptime & Stability" }
+      ]
     },
     problems: {
       eyebrow: "The challenge",
@@ -270,51 +281,67 @@ const copy: Record<Lang, Dictionary> = {
       reports: "Reports",
       core: "Rafid Core",
     },
-    features: {
-      eyebrow: "Features",
-      title: "Designed for daily operations, not just for visual appeal.",
+    outcomes: {
+      eyebrow: "Outcomes",
+      title: "Designed for daily operations with immediate real results.",
       items: [
         {
-          title: "Contract & document control",
-          body: "A structured view of contracts, dates, alerts, and attachments in one consistent interface.",
-          stat: "128 active contracts",
+          title: "Reduce maintenance time by 40%",
+          body: "Automate the ticket lifecycle from submission to technician assignment and closure without endless calls.",
+          stat: "Faster Operations",
         },
         {
-          title: "Rent collection management",
-          body: "Track dues, payments, and financial alerts through visual dashboards built for fast review.",
-          stat: "OMR 45,200",
+          title: "Instant financial reports without Excel",
+          body: "Drop spreadsheets. Monitor revenue, collections, and receipts in live dashboards with a single click.",
+          stat: "Real-time Metrics",
         },
         {
-          title: "Clear maintenance workflow",
-          body: "Log, assign, monitor, and close maintenance tickets with full timeline visibility.",
-          stat: "12 open tickets",
+          title: "Automated lease tracking",
+          body: "No more expired contracts slipping through. The system alerts you early to maintain high occupancy.",
+          stat: "Automated Leasing",
         },
         {
-          title: "Decision-ready reporting",
-          body: "Get direct insight into occupancy, collections, alerts, and critical operational metrics.",
-          stat: "95% occupancy",
+          title: "Centralized view for owners",
+          body: "Provide decision-makers with clear summaries of asset health, empowering faster expansion and growth.",
+          stat: "Owner Portal",
         },
       ],
     },
     screenshots: {
-      eyebrow: "The product",
+      eyebrow: "The System",
       title: "Product views that build confidence before the first meeting.",
-      cards: ["Executive dashboard", "Contract detail", "Maintenance queue", "Reporting panel"],
+      cards: [
+        { title: "Smart Dashboard", desc: "Monitor all operations in real-time on one focused screen." },
+        { title: "Integrated Contract Details", desc: "Holistic view of every contract, payments, and alerts effortlessly." },
+        { title: "Maintenance Tracking", desc: "Assign tasks and monitor technician performance to improve quality." },
+        { title: "Analytical Reports", desc: "Deep insights to accurately identify your portfolio's strengths and weaknesses." }
+      ],
     },
     why: {
-      eyebrow: "Why Rafid",
-      title: "A practical product for teams managing real assets.",
-      lines: ["Full control.", "Clear visibility.", "Faster decisions."],
+      eyebrow: "Why Rafid?",
+      title: "Solid technological foundations to serve your ambition.",
+      items: [
+        { label: "100% Cloud Based", desc: "Access from anywhere without complex servers or costly local installations." },
+        { label: "Built for the GCC", desc: "Designed to understand local contract laws, regulations, and market nuances." },
+        { label: "Full Arabic & English Support", desc: "A technical team that speaks your language and is ready when you need them." },
+        { label: "Highly Customizable", desc: "Adapts to your company structure and modules that fit your precise requirements." },
+      ],
     },
     cta: {
       title: "Start with Rafid today",
-      body: "Request a tailored walkthrough and see how your operations shift from fragmentation to control.",
-      primary: "Book a demo",
-      secondary: "Talk to us",
+      body: "Request a custom quote or start your free trial and watch your operations shift from fragmentation to control.",
+      primary: "Book a Demo",
+      secondary: "Contact via WhatsApp",
     },
     footer: {
       address: "Muscat, Oman",
       rights: "All rights reserved to Rafid",
+      links: [
+        { label: "Support", href: "#" },
+        { label: "Privacy Policy", href: "#" },
+        { label: "Contact Us", href: "#contact" },
+        { label: "About Us", href: "#" }
+      ]
     },
   },
 }
@@ -323,7 +350,7 @@ const marqueeMetrics = [
   "500+ Units",
   "95% Occupancy",
   "1M+ Transactions",
-  "40% Faster Collections",
+  "40% Faster",
   "12 Active Tickets",
 ]
 
@@ -343,22 +370,22 @@ const screenshotImages = [
   { url: 'https://storage.googleapis.com/ard3/Rafid%20Website/Rafid-dashboard.png', alt: 'Rafid Dashboard' },
 ]
 
-
 export default function Page() {
   const [lang, setLang] = useState<Lang>("ar")
   const [menuOpen, setMenuOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
 
   const t = useMemo(() => copy[lang], [lang])
+  const isArabic = lang === "ar"
 
   useEffect(() => {
     document.documentElement.dir = t.dir
     document.documentElement.lang = lang
   }, [lang, t.dir])
 
-  const isArabic = lang === "ar"
-
   useEffect(() => {
     const handleScroll = () => {
+      setScrolled(window.scrollY > 300)
       const heroDashboard = document.getElementById("hero-dashboard")
       if (heroDashboard) {
         const y = window.scrollY
@@ -372,12 +399,13 @@ export default function Page() {
   return (
     <main
       dir={t.dir}
-      className="min-h-screen overflow-x-hidden bg-[#071426] text-white selection:bg-orange-500/30 selection:text-white"
+      className="min-h-screen overflow-x-hidden bg-[#071426] text-white selection:bg-orange-500/30 selection:text-white pb-16"
     >
       <BackgroundOrbs />
       <Header lang={lang} setLang={setLang} menuOpen={menuOpen} setMenuOpen={setMenuOpen} t={t} />
 
-      <section className="relative mx-auto max-w-7xl px-4 pb-20 pt-28 sm:px-6 lg:px-8 lg:pb-28 lg:pt-32">
+      {/* Hero Section */}
+      <section className="relative mx-auto max-w-7xl px-4 pb-20 pt-28 sm:px-6 lg:px-8 lg:pb-16 lg:pt-32">
         <div className="grid items-center gap-14 lg:grid-cols-[1.05fr_0.95fr]">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -390,7 +418,7 @@ export default function Page() {
               {t.hero.badge}
             </div>
 
-            <h1 className="max-w-3xl text-4xl font-black leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
+            <h1 className="max-w-4xl text-4xl font-black leading-tight tracking-tight text-white sm:text-5xl lg:text-5xl">
               {t.hero.title}
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-8 text-slate-300 sm:text-lg">
@@ -400,31 +428,16 @@ export default function Page() {
             <div className={`mt-8 flex flex-wrap gap-4 ${isArabic ? "justify-start lg:justify-start" : "justify-start"}`}>
               <a
                 href="#contact"
-                className="group inline-flex items-center gap-2 rounded-xl bg-orange-500 px-6 py-3.5 text-sm font-semibold text-white shadow-[0_10px_40px_rgba(249,115,22,.28)] transition hover:-translate-y-0.5 hover:bg-orange-400"
+                className="group inline-flex items-center gap-3 rounded-xl bg-orange-500 px-6 py-4 text-base font-bold text-white shadow-[0_10px_40px_rgba(249,115,22,.28)] transition hover:-translate-y-0.5 hover:bg-orange-400"
               >
                 {t.hero.ctaPrimary}
-                <ArrowUpRight className="h-4 w-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
               <a
-                href="#system"
-                className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-6 py-3.5 text-sm font-semibold text-slate-100 backdrop-blur-md transition hover:-translate-y-0.5 hover:bg-white/10"
+                href="#pricing"
+                className="inline-flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-6 py-4 text-base font-bold text-slate-100 backdrop-blur-md transition hover:-translate-y-0.5 hover:bg-white/10"
               >
                 {t.hero.ctaSecondary}
               </a>
-            </div>
-
-            <div className="mt-10 grid gap-3 sm:grid-cols-3">
-              {[t.hero.metric1, t.hero.metric2, t.hero.metric3].map((item, index) => (
-                <motion.div
-                  key={item}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.15 * index + 0.25, duration: 0.6 }}
-                  className="rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-4 text-sm text-slate-200 backdrop-blur-md"
-                >
-                  {item}
-                </motion.div>
-              ))}
             </div>
           </motion.div>
 
@@ -450,12 +463,36 @@ export default function Page() {
         </div>
       </section>
 
-      <section className="relative mx-auto max-w-7xl px-4 pb-8 sm:px-6 lg:px-8 marquee-container">
+      {/* Social Proof Stats */}
+      <section className="relative mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 border-t border-white/5">
+         <div className="text-center mb-8">
+            <p className="text-sm font-semibold text-slate-400 uppercase tracking-widest">{t.socialProof.eyebrow}</p>
+            <h3 className="mt-2 text-2xl font-bold text-white">{t.socialProof.title}</h3>
+         </div>
+         <div className="grid gap-6 md:grid-cols-3">
+            {t.socialProof.stats.map((stat, i) => (
+              <motion.div 
+                 key={i}
+                 initial={{ opacity: 0, y: 20 }}
+                 whileInView={{ opacity: 1, y: 0 }}
+                 viewport={{ once: true }}
+                 transition={{ delay: i * 0.1 }}
+                 className="flex flex-col items-center justify-center p-6 rounded-2xl bg-white/[0.02] border border-white/5"
+              >
+                 <span className="text-4xl font-black text-orange-400 mb-2">{stat.value}</span>
+                 <span className="text-slate-300 font-medium">{stat.label}</span>
+              </motion.div>
+            ))}
+         </div>
+      </section>
+
+      <section className="relative mx-auto max-w-7xl px-4 pb-8 pt-8 sm:px-6 lg:px-8 marquee-container">
         <Marquee isArabic={isArabic} />
       </section>
 
       <SectionDivider />
 
+      {/* Problems */}
       <section className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <SectionHeading eyebrow={t.problems.eyebrow} title={t.problems.title} intro={t.problems.intro} align={t.dir} />
         <div className="mt-12 grid auto-rows-[160px] gap-5 md:grid-cols-6">
@@ -489,6 +526,7 @@ export default function Page() {
 
       <SectionDivider />
 
+      {/* Solution diagram */}
       <section className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <SectionHeading eyebrow={t.solution.eyebrow} title={t.solution.title} intro={t.solution.intro} align={t.dir} />
         <div className="mt-12 rounded-[32px] border border-white/10 bg-gradient-to-br from-white/[0.06] to-white/[0.03] p-6 backdrop-blur-xl lg:p-10">
@@ -514,10 +552,11 @@ export default function Page() {
       
       <SectionDivider />
 
+      {/* Features to Outcomes */}
       <section id="features" className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <SectionHeading eyebrow={t.features.eyebrow} title={t.features.title} align={t.dir} />
+        <SectionHeading eyebrow={t.outcomes.eyebrow} title={t.outcomes.title} align={t.dir} />
         <div className="mt-12 space-y-8">
-          {t.features.items.map((feature, index) => (
+          {t.outcomes.items.map((feature, index) => (
             <motion.div
               key={feature.title}
               initial={{ opacity: 0, y: 24 }}
@@ -530,8 +569,8 @@ export default function Page() {
                 <FeatureVisual imageUrl={featureImages[index]} alt={feature.title} />
               </div>
               <div className={`flex flex-col justify-center ${index % 2 === 1 ? "lg:order-1" : ""} ${isArabic ? "text-right" : "text-left"}`}>
-                <div className="mb-4 inline-flex w-fit items-center gap-2 rounded-full bg-orange-500/10 px-3 py-1 text-sm text-orange-300">
-                  {feature.stat}
+                <div className="mb-4 inline-flex w-fit items-center gap-2 rounded-full bg-emerald-500/10 px-3 py-1 text-sm text-emerald-300 font-semibold border border-emerald-500/20">
+                  <Star className="w-4 h-4" /> {feature.stat}
                 </div>
                 <h3 className="text-2xl font-bold text-white">{feature.title}</h3>
                 <p className="mt-4 max-w-xl text-base leading-8 text-slate-300">{feature.body}</p>
@@ -543,6 +582,7 @@ export default function Page() {
 
       <SectionDivider />
 
+      {/* System Screenshots with Context */}
       <section id="system" className="relative w-full overflow-hidden py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeading eyebrow={t.screenshots.eyebrow} title={t.screenshots.title} align={t.dir} />
@@ -556,28 +596,31 @@ export default function Page() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.3 }}
                     transition={{ delay: index * 0.1, duration: 0.5 }}
-                    whileHover={{ y: -5 }}
-                    className="group relative min-w-[300px] md:min-w-[400px] aspect-video flex-shrink-0 cursor-pointer overflow-hidden rounded-2xl border border-white/10 shadow-lg transition-all duration-300 hover:shadow-orange-500/10"
+                    className="group relative min-w-[320px] md:min-w-[420px] aspect-[4/3] flex-shrink-0 cursor-pointer overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] shadow-lg transition-all duration-300 hover:shadow-orange-500/10 flex flex-col"
                 >
-                    <Image
-                    src={img.url}
-                    alt={img.alt}
-                    width={800}
-                    height={450}
-                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/10 transition-colors group-hover:from-black/40" />
-                    <h3 className="absolute bottom-4 left-4 right-4 text-lg font-bold text-white opacity-90 transition-opacity group-hover:opacity-100">{t.screenshots.cards[index]}</h3>
+                    <div className="relative flex-1 overflow-hidden">
+                       <Image
+                         src={img.url}
+                         alt={img.alt}
+                         fill
+                         className="object-cover transition-transform duration-500 group-hover:scale-105"
+                       />
+                       <div className="absolute inset-0 bg-gradient-to-t from-[#0f1f38] via-transparent to-transparent opacity-60" />
+                    </div>
+                    <div className="p-6 bg-[#0f1f38] border-t border-white/5">
+                       <h3 className="text-lg font-bold text-white tracking-wide">{t.screenshots.cards[index].title}</h3>
+                       <p className="mt-2 text-sm text-slate-400 leading-relaxed">{t.screenshots.cards[index].desc}</p>
+                    </div>
                 </motion.div>
                 </DialogTrigger>
                 <DialogContent className="max-w-6xl p-2 bg-black/80 border-white/10 backdrop-blur-lg">
-                <Image
-                    src={img.url}
-                    alt={img.alt}
-                    width={1920}
-                    height={1080}
-                    className="w-full h-auto rounded-md object-contain"
-                />
+                  <Image
+                      src={img.url}
+                      alt={img.alt}
+                      width={1920}
+                      height={1080}
+                      className="w-full h-auto rounded-md object-contain"
+                  />
                 </DialogContent>
             </Dialog>
             ))}
@@ -586,20 +629,25 @@ export default function Page() {
       
       <SectionDivider />
 
+      {/* Why Rafid Detailed Performance */}
       <section id="why" className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
+        <div className="grid gap-12 lg:grid-cols-[1fr_1.5fr] lg:items-start">
           <SectionHeading eyebrow={t.why.eyebrow} title={t.why.title} align={t.dir} />
-          <div className={`grid gap-4 sm:grid-cols-3 ${isArabic ? "text-right" : "text-left"}`}>
-            {t.why.lines.map((line, index) => (
+          <div className="grid gap-6 sm:grid-cols-2">
+            {[<Cloud key="cloud" className="h-6 w-6"/>, <MapPin key="pin" className="h-6 w-6"/>, <Headset key="headset" className="h-6 w-6"/>, <Settings key="settings" className="h-6 w-6"/>].map((icon, index) => (
               <motion.div
-                key={line}
+                key={index}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.08, duration: 0.5 }}
-                className="rounded-[28px] border border-white/10 bg-white/[0.04] p-6 text-2xl font-black tracking-tight text-white backdrop-blur-xl"
+                transition={{ delay: index * 0.1, duration: 0.5 }}
+                className={`rounded-[28px] border border-white/10 bg-white/[0.04] p-8 backdrop-blur-xl transition hover:bg-white/[0.06] ${isArabic ? "text-right" : "text-left"}`}
               >
-                {line}
+                <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-500/10 text-orange-400">
+                   {icon}
+                </div>
+                <h4 className="text-xl font-bold text-white mb-3">{t.why.items[index].label}</h4>
+                <p className="text-slate-400 leading-7">{t.why.items[index].desc}</p>
               </motion.div>
             ))}
           </div>
@@ -608,8 +656,9 @@ export default function Page() {
 
       <SectionDivider />
       
+      {/* Dynamic CPQ PricingSection */}
       <section id="pricing" className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <InteractivePricing isArabic={isArabic} align={t.dir} />
+        <PricingSection align={t.dir} />
       </section>
 
       <SectionDivider />
@@ -624,12 +673,12 @@ export default function Page() {
               <h2 className="mt-3 text-3xl font-black text-white sm:text-4xl">{t.cta.title}</h2>
               <p className="mt-4 max-w-2xl text-base leading-8 text-slate-300">{t.cta.body}</p>
             </div>
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-col sm:flex-row flex-wrap gap-4">
               <motion.a
                  animate={{ scale: [1, 1.03, 1] }}
                  transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
                 href="mailto:info@rafid.om"
-                className="inline-flex items-center gap-2 rounded-xl bg-orange-500 px-6 py-3.5 text-sm font-semibold text-white shadow-[0_0_30px_rgba(249,115,22,.2)] transition hover:-translate-y-0.5 hover:bg-orange-400"
+                className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl bg-orange-500 px-6 py-4 text-base font-bold text-white shadow-[0_0_30px_rgba(249,115,22,.2)] transition hover:-translate-y-0.5 hover:bg-orange-400"
               >
                 {t.cta.primary}
               </motion.a>
@@ -637,19 +686,19 @@ export default function Page() {
                 href="https://wa.me/96892975614"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-6 py-3.5 text-sm font-semibold text-slate-100 backdrop-blur-md transition hover:-translate-y-0.5 hover:bg-white/[0.08]"
+                className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-6 py-4 text-base font-bold text-slate-100 backdrop-blur-md transition hover:-translate-y-0.5 hover:bg-white/[0.08]"
               >
-                {t.cta.secondary}
+                <div className="w-2 h-2 rounded-full bg-green-500"></div> {t.cta.secondary}
               </a>
             </div>
           </div>
         </div>
       </section>
 
-      <footer className="border-t border-white/10">
-        <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-8 text-sm text-slate-400 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+      <footer className="border-t border-white/10 mt-12 bg-black/20">
+        <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 py-12 text-sm text-slate-400 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
           <div>
-            <a href="#" className="relative block h-10 w-24">
+            <a href="#" className="relative block h-12 w-28 mb-4">
               <Image
                 src="https://storage.googleapis.com/ard3/ARD%20FM%20SYSTEM/logo%202.jpg"
                 alt="Rafid Logo"
@@ -657,11 +706,46 @@ export default function Page() {
                 className="object-contain"
               />
             </a>
-            <p className="mt-1">{t.footer.address}</p>
+            <p className="mt-2 text-slate-500">{t.footer.address}</p>
           </div>
-          <p>{t.footer.rights}</p>
+          <div className="flex flex-wrap gap-x-8 gap-y-4 font-medium text-slate-300">
+             {t.footer.links.map((link) => (
+                <a key={link.label} href={link.href} className="hover:text-white transition-colors">{link.label}</a>
+             ))}
+          </div>
+          <p className="border-t border-white/10 pt-8 lg:border-t-0 lg:pt-0 text-slate-500">{t.footer.rights}</p>
         </div>
       </footer>
+
+      {/* Floating WhatsApp CTA */}
+      <a 
+        href="https://wa.me/96892975614" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        className="fixed bottom-6 left-6 z-[60] flex h-14 w-14 items-center justify-center rounded-full bg-green-500 text-white shadow-2xl transition-all hover:scale-110 focus:outline-none"
+      >
+         <div className="absolute inset-0 rounded-full bg-green-500 animate-ping opacity-25"></div>
+         <MessageCircle className="h-7 w-7" />
+      </a>
+
+      {/* Sticky Bottom Bar CTA that appears on scroll */}
+       <AnimatePresence>
+        {scrolled && (
+          <motion.div
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 100, opacity: 0 }}
+            className="fixed bottom-0 inset-x-0 z-50 p-4 lg:hidden bg-[#071426]/90 backdrop-blur-lg border-t border-white/10"
+          >
+             <a
+               href="#pricing"
+               className="flex w-full items-center justify-center gap-2 rounded-xl bg-orange-500 px-4 py-3 text-sm font-bold text-white shadow-lg"
+             >
+               {t.hero.ctaPrimary}
+             </a>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </main>
   )
 }
@@ -702,7 +786,7 @@ function Header({
               />
             </a>
 
-            <nav className="hidden items-center gap-7 text-sm text-slate-300 lg:flex">
+            <nav className="hidden items-center gap-7 text-sm font-medium text-slate-300 lg:flex">
               {items.map((item) => (
                 <a key={item.href} href={item.href} className="transition hover:text-white">
                   {item.label}
@@ -720,9 +804,15 @@ function Header({
               </button>
               <a
                 href="#contact"
-                className="rounded-xl bg-orange-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-orange-400"
+                className="rounded-xl border border-white/10 bg-transparent px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/5"
               >
-                {t.nav.requestDemo}
+                {t.nav.demo}
+              </a>
+              <a
+                href="#pricing"
+                className="rounded-xl bg-orange-500 px-4 py-2 text-sm font-semibold text-white shadow-lg transition hover:bg-orange-400"
+              >
+                🚀 {t.hero.ctaPrimary.replace('🚀', '').trim()} 
               </a>
             </div>
 
@@ -753,16 +843,24 @@ function Header({
                     setLang(lang === "ar" ? "en" : "ar")
                     setMenuOpen(false)
                   }}
-                  className="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-3 text-sm text-slate-100"
+                  className="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-3 text-sm text-slate-100 mt-2"
                 >
+                  <Globe className="h-4 w-4 inline mr-2 ml-2" />
                   {t.nav.switchLabel}
                 </button>
                 <a
                   href="#contact"
                   onClick={() => setMenuOpen(false)}
-                  className="rounded-xl bg-orange-500 px-3 py-3 text-center text-sm font-semibold text-white"
+                  className="rounded-xl border border-slate-700 bg-transparent px-3 py-3 text-center text-sm font-semibold text-white mt-1"
                 >
-                  {t.nav.requestDemo}
+                  {t.nav.demo}
+                </a>
+                <a
+                  href="#pricing"
+                  onClick={() => setMenuOpen(false)}
+                  className="rounded-xl bg-orange-500 px-3 py-3 text-center text-sm font-semibold text-white mt-2"
+                >
+                  {t.hero.ctaPrimary}
                 </a>
               </div>
             </div>
@@ -772,196 +870,6 @@ function Header({
     </header>
   )
 }
-
-function ModuleToggle({
-  title,
-  active,
-  onClick,
-  locked = false,
-}: {
-  title: string
-  active: boolean
-  onClick?: () => void
-  locked?: boolean
-}) {
-  return (
-    <div
-      onClick={!locked ? onClick : undefined}
-      className={`cursor-pointer rounded-2xl border p-4 transition ${
-        active
-          ? "border-orange-500 bg-orange-500/10"
-          : "border-white/10 bg-white/[0.04]"
-      } ${locked ? "opacity-60 cursor-not-allowed" : ""}`}
-    >
-      <div className="flex justify-between items-center">
-        <span className="text-white font-medium">{title}</span>
-        <div
-          className={`w-4 h-4 rounded ${
-            active ? "bg-orange-500" : "bg-gray-500"
-          }`}
-        />
-      </div>
-    </div>
-  )
-}
-
-function InteractivePricing({
-  isArabic,
-  align,
-}: {
-  isArabic: boolean
-  align: "rtl" | "ltr"
-}) {
-  const [units, setUnits] = useState(25);
-  const [billing, setBilling] = useState<"monthly" | "yearly">("monthly");
-  const [modules, setModules] = useState({
-    core: true,
-    operations: false,
-    finance: false,
-    insights: false,
-  });
-
-  const basePrice = units * 1;
-  const modulesPrice =
-    (modules.operations ? units * 0.5 : 0) +
-    (modules.finance ? units * 0.7 : 0) +
-    (modules.insights ? units * 0.3 : 0);
-  const monthlyTotal = Math.max(25, basePrice + modulesPrice);
-  const yearlyTotal = Math.round(monthlyTotal * 12 * 0.8);
-  const finalPrice =
-    billing === "yearly" ? yearlyTotal : monthlyTotal;
-
-  return (
-    <>
-      <SectionHeading
-        eyebrow={isArabic ? "الأسعار" : "Pricing"}
-        title={isArabic ? "باقات مرنة تناسب حجم أعمالك" : "Flexible plans for your operations"}
-        intro={
-          isArabic
-            ? "حرّك المؤشر واختر الموديلات لحساب تقديري لسعر باقتك."
-            : "Use the slider and select modules to estimate your plan's price."
-        }
-        align={align}
-      />
-
-      <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-3">
-        <div className="lg:col-span-2 space-y-8">
-          <div className="rounded-[28px] border border-white/10 bg-white/[0.04] p-6 backdrop-blur-xl">
-            <p className="text-sm uppercase tracking-[0.22em] text-orange-300/80">
-              {isArabic ? "عدد الوحدات" : "Number of units"}
-            </p>
-            <div className="mt-3 flex items-end gap-3">
-              <span className="text-5xl font-black text-white">{units}</span>
-              <span className="pb-1 text-sm text-slate-400">
-                {isArabic ? "وحدة" : "units"}
-              </span>
-            </div>
-            <input
-              type="range"
-              min={10}
-              max={300}
-              step={5}
-              value={units}
-              onChange={(e) => setUnits(Number(e.target.value))}
-              className="mt-4 h-2 w-full cursor-pointer appearance-none rounded-full bg-white/10 accent-orange-500"
-            />
-            <div className="mt-3 flex justify-between text-xs text-slate-400">
-              <span>10</span>
-              <span>75</span>
-              <span>150</span>
-              <span>225</span>
-              <span>300+</span>
-            </div>
-          </div>
-          
-          <div className="rounded-[28px] border border-white/10 bg-white/[0.04] p-6 backdrop-blur-xl">
-            <p className="text-sm uppercase tracking-[0.22em] text-orange-300/80">
-              {isArabic ? "اختر الموديلات" : "Select Modules"}
-            </p>
-            <div className="mt-6 grid gap-4 md:grid-cols-2">
-              <ModuleToggle
-                title={isArabic ? "النظام الأساسي" : "Core System"}
-                active={modules.core}
-                locked
-              />
-              <ModuleToggle
-                title={isArabic ? "العمليات" : "Operations"}
-                active={modules.operations}
-                onClick={() =>
-                  setModules({ ...modules, operations: !modules.operations })
-                }
-              />
-              <ModuleToggle
-                title={isArabic ? "المالية" : "Finance"}
-                active={modules.finance}
-                onClick={() =>
-                  setModules({ ...modules, finance: !modules.finance })
-                }
-              />
-              <ModuleToggle
-                title={isArabic ? "التقارير المتقدمة" : "Insights"}
-                active={modules.insights}
-                onClick={() =>
-                  setModules({ ...modules, insights: !modules.insights })
-                }
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="flex flex-col rounded-[28px] border-2 border-orange-500/40 bg-orange-500/10 p-6 backdrop-blur-xl shadow-[0_20px_80px_rgba(249,115,22,.2)]">
-          <p className="text-sm uppercase tracking-[0.22em] text-orange-300/80">
-            {isArabic ? "التكلفة التقديرية" : "Estimated Cost"}
-          </p>
-
-          <div className="my-6">
-            <p className="text-4xl font-black text-orange-400">
-              {isArabic
-                ? `${finalPrice.toFixed(0)} ر.ع`
-                : `OMR ${finalPrice.toFixed(0)}`}
-            </p>
-            <p className="text-base font-medium text-white">
-              {isArabic
-                ? `/ ${billing === "yearly" ? "سنة" : "شهر"}`
-                : `/ ${billing === "yearly" ? "year" : "mo"}`}
-            </p>
-          </div>
-
-          <div className="inline-flex rounded-2xl border border-white/10 bg-white/[0.04] p-1 self-center">
-            <button
-              onClick={() => setBilling("monthly")}
-              className={`rounded-xl px-4 py-2 text-sm font-medium transition ${
-                billing === "monthly" ? "bg-orange-500 text-white" : "text-slate-300 hover:bg-white/[0.05]"
-              }`}
-            >
-              {isArabic ? "شهري" : "Monthly"}
-            </button>
-            <button
-              onClick={() => setBilling("yearly")}
-              className={`rounded-xl px-4 py-2 text-sm font-medium transition ${
-                billing === "yearly" ? "bg-orange-500 text-white" : "text-slate-300 hover:bg-white/[0.05]"
-              }`}
-            >
-              {isArabic ? "سنوي" : "Yearly"}
-            </button>
-          </div>
-          {billing === "yearly" && (
-            <div className="mt-4 text-center rounded-xl bg-orange-500/10 px-4 py-2 text-sm text-orange-300">
-              {isArabic ? "شامل خصم 20%!" : "Includes 20% discount!"}
-            </div>
-          )}
-
-          <div className="flex-grow"></div>
-
-          <button className="mt-8 w-full rounded-xl bg-orange-500 py-3 text-sm font-semibold text-white transition hover:bg-orange-400">
-             {isArabic ? "تواصل للمؤسسات" : "Contact Sales"}
-          </button>
-        </div>
-      </div>
-    </>
-  )
-}
-
 
 function SectionDivider() {
   return (
@@ -984,32 +892,6 @@ function BackgroundOrbs() {
   )
 }
 
-function DashboardCard({
-  icon,
-  label,
-  value,
-  delta,
-}: {
-  icon: React.ReactNode
-  label: string
-  value: string
-  delta: string
-}) {
-  return (
-    <motion.div
-      whileHover={{ y: -4 }}
-      className="rounded-2xl border border-white/10 bg-white/[0.04] p-4"
-    >
-      <div className="flex items-start justify-between">
-        <div className="rounded-xl bg-white/[0.06] p-2 text-orange-300">{icon}</div>
-        <span className="text-xs text-emerald-300">{delta}</span>
-      </div>
-      <p className="mt-4 text-sm text-slate-400">{label}</p>
-      <p className="mt-1 text-2xl font-bold text-white">{value}</p>
-    </motion.div>
-  )
-}
-
 function SectionHeading({
   eyebrow,
   title,
@@ -1023,7 +905,7 @@ function SectionHeading({
 }) {
   return (
     <div className={align === "rtl" ? "text-right" : "text-left"}>
-      <p className="text-sm uppercase tracking-[0.22em] text-orange-300/80">{eyebrow}</p>
+      <p className="text-sm font-bold uppercase tracking-widest text-orange-400">{eyebrow}</p>
       <h2 className="mt-3 max-w-3xl text-3xl font-black leading-tight text-white sm:text-4xl">
         {title}
       </h2>
@@ -1038,7 +920,7 @@ function FlowNode({ title, icon }: { title: string; icon: React.ReactNode }) {
       whileHover={{ scale: 1.02 }}
       className="rounded-[28px] border border-white/10 bg-white/[0.04] p-6 text-center backdrop-blur-xl"
     >
-      <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-orange-500/15 text-orange-300">
+      <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-orange-500/15 text-orange-400">
         {icon}
       </div>
       <p className="mt-4 text-lg font-semibold text-white">{title}</p>
@@ -1051,9 +933,9 @@ function CoreNode({ title }: { title: string }) {
     <motion.div
       animate={{ boxShadow: ["0 0 0 rgba(249,115,22,0)", "0 0 40px rgba(249,115,22,0.16)", "0 0 0 rgba(249,115,22,0)"] }}
       transition={{ repeat: Infinity, duration: 3.5, ease: "easeInOut" }}
-      className="rounded-[30px] border border-orange-400/20 bg-gradient-to-br from-orange-500/15 to-white/[0.04] p-8 text-center backdrop-blur-xl"
+      className="rounded-[30px] border border-orange-400/20 bg-gradient-to-br from-orange-500/15 to-white/[0.04] p-8 text-center backdrop-blur-xl shadow-lg"
     >
-      <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-orange-500/20 text-orange-300">
+      <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-orange-500 text-white shadow-[0_0_20px_rgba(249,115,22,0.5)]">
         <Sparkles className="h-7 w-7" />
       </div>
       <p className="mt-4 text-xl font-black text-white">{title}</p>
@@ -1077,16 +959,16 @@ function FeatureVisual({ imageUrl, alt }: { imageUrl: string, alt: string }) {
 function Marquee({ isArabic }: { isArabic: boolean }) {
   const items = [...marqueeMetrics, ...marqueeMetrics]
   return (
-    <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] py-4 backdrop-blur-xl">
+    <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] py-4 backdrop-blur-xl">
       <motion.div
         animate={{ x: isArabic ? ["-50%", "0%"] : ["0%", "-50%"] }}
-        transition={{ repeat: Infinity, duration: 18, ease: "linear" }}
-        className="flex min-w-max gap-10 px-6"
+        transition={{ repeat: Infinity, duration: 25, ease: "linear" }}
+        className="flex min-w-max gap-12 px-6"
       >
         {items.map((item, index) => (
           <div key={`${item}-${index}`} className="flex items-center gap-3 text-sm whitespace-nowrap">
             <span className="font-black text-orange-400">{item.split(" ")[0]}</span>
-            <span className="text-slate-300">{item.split(" ").slice(1).join(" ")}</span>
+            <span className="text-slate-300 font-medium">{item.split(" ").slice(1).join(" ")}</span>
           </div>
         ))}
       </motion.div>
