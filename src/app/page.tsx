@@ -324,7 +324,7 @@ export default function Page() {
                 <div className="absolute -inset-4 rounded-[40px] bg-gradient-to-tr from-slate-200 to-slate-50 blur-2xl opacity-60" />
                 <div className="relative rounded-[24px] border border-slate-200 bg-white p-2 shadow-xl hover:-translate-y-2 transition-transform duration-500">
                   <Image
-                    src="/images/screenshots/hero.png"
+                    src="/images/screenshots/hero.svg"
                     alt="Hero Dashboard"
                     width={1200}
                     height={800}

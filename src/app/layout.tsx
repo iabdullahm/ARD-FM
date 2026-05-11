@@ -8,7 +8,7 @@ const TITLE_AR = 'رافد | نظام إدارة المرافق والعقارا
 const DESCRIPTION_AR =
   'منصة سحابية متكاملة لإدارة المرافق والعقارات: تقليل زمن الإصلاح بنسبة 30%، توفر 99.99%، توسعة لـ50+ منشأة في الساعة، مع تشفير AES-256 ومصادقة ثنائية.';
 const OG_IMAGE =
-  '/images/screenshots/hero.png';
+  '/images/screenshots/hero.svg';
 
 export const viewport: Viewport = {
   width: 'device-width',
