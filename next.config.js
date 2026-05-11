@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   /* config options here */
-  output: 'standalone',
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -9,7 +8,8 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    unoptimized: true,
+    // Allow Vercel image optimization for local images (in public/)
+    // Keep a few external sources for placeholders during development
     remotePatterns: [
       {
         protocol: 'https',
@@ -20,18 +20,6 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'images.unsplash.com',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'picsum.photos',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'storage.googleapis.com',
         port: '',
         pathname: '/**',
       },

@@ -8,7 +8,7 @@ const TITLE_AR = 'رافد | نظام إدارة المرافق والعقارا
 const DESCRIPTION_AR =
   'منصة سحابية متكاملة لإدارة المرافق والعقارات: تقليل زمن الإصلاح بنسبة 30%، توفر 99.99%، توسعة لـ50+ منشأة في الساعة، مع تشفير AES-256 ومصادقة ثنائية.';
 const OG_IMAGE =
-  'https://storage.googleapis.com/ard3/Rafid%20Website/screen%20shots/hero.png';
+  '/images/screenshots/hero.png';
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -96,7 +96,7 @@ const jsonLd = {
       '@type': 'Organization',
       name: 'Creative Techno LLC',
       url: SITE_URL,
-      logo: 'https://storage.googleapis.com/ard3/Rafid%20Website/Rafid%20logo%20no%20bg.png',
+      logo: '/images/logo.png',
       contactPoint: {
         '@type': 'ContactPoint',
         contactType: 'sales',

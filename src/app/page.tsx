@@ -264,8 +264,8 @@ export default function Page() {
             <div className="grid items-center gap-16 lg:grid-cols-[1.1fr_0.9fr]">
               <div className={`flex flex-col ${isArabic ? "text-right" : "text-left"}`}>
                 <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white shadow-sm px-4 py-2 text-xs font-semibold text-slate-600 self-start">
-                  <div className="relative h-4 w-10">
-                    <Image src="https://storage.googleapis.com/ard3/Rafid%20Website/Rafid%20logo%20no%20bg.png" alt="Logo" fill className="object-contain" />
+                  <div className="relative h-5 w-5">
+                    <Image src="/images/logo.png" alt="Logo" fill className="object-contain" />
                   </div>
                   {t.hero.badge}
                 </div>
@@ -324,7 +324,7 @@ export default function Page() {
                 <div className="absolute -inset-4 rounded-[40px] bg-gradient-to-tr from-slate-200 to-slate-50 blur-2xl opacity-60" />
                 <div className="relative rounded-[24px] border border-slate-200 bg-white p-2 shadow-xl hover:-translate-y-2 transition-transform duration-500">
                   <Image
-                    src="https://storage.googleapis.com/ard3/Rafid%20Website/screen%20shots/hero.png"
+                    src="/images/screenshots/hero.png"
                     alt="Hero Dashboard"
                     width={1200}
                     height={800}
@@ -483,8 +483,8 @@ function Header({ lang, setLang, t }: { lang: Lang, setLang: (l: Lang) => void, 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between">
           <a href="#" className="flex items-center gap-3">
-            <div className="relative h-8 w-24">
-              <Image src="https://storage.googleapis.com/ard3/Rafid%20Website/Rafid%20logo%20no%20bg.png" alt="Rafid Logo" fill className="object-contain" />
+            <div className="relative h-12 w-12">
+              <Image src="/images/logo.png" alt="Rafid Logo" fill className="object-contain" />
             </div>
           </a>
 

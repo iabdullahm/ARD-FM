@@ -49,12 +49,12 @@ export function RichFooter({ lang = "ar" }: { lang?: "ar" | "en" }) {
         <div className="grid gap-12 lg:grid-cols-[1.5fr_1fr_1fr_1fr_1.2fr]">
           {/* Brand column */}
           <div>
-            <div className="relative h-10 w-28 mb-5">
+            <div className="relative h-14 w-14 mb-5">
               <Image
-                src="https://storage.googleapis.com/ard3/Rafid%20Website/Rafid%20logo%20no%20bg.png"
+                src="/images/logo.png"
                 alt="Rafid"
                 fill
-                className="object-contain object-right brightness-0 invert"
+                className="object-contain"
               />
             </div>
             <p className="text-sm text-slate-400 leading-relaxed max-w-sm">
