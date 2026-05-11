@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here */
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -8,8 +7,10 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    // Allow Vercel image optimization for local images (in public/)
-    // Keep a few external sources for placeholders during development
+    // Allow SVG files - safe because we only host our own SVGs in /public
+    dangerouslyAllowSVG: true,
+    contentDispositionType: 'attachment',
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     remotePatterns: [
       {
         protocol: 'https',
