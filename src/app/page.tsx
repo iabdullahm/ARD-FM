@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
@@ -44,6 +45,8 @@ const STRINGS = {
       switchLabel: 'EN',
       demo: 'جرب النظام الآن (Demo)',
       team: 'فريقنا',
+      about: 'عن رافد',
+      blog: 'المدونة',
     },
     hero: {
       badge: 'منصة إدارة المرافق والعقارات #1 في سلطنة عُمان',
@@ -68,6 +71,8 @@ const STRINGS = {
       switchLabel: 'AR',
       demo: 'Try Demo',
       team: 'Team',
+      about: 'About',
+      blog: 'Blog',
     },
     hero: {
       badge: 'The #1 Facilities & Property Management Platform in Oman',
@@ -95,6 +100,8 @@ export default function HomePage() {
     { label: t.nav.pricing, href: '#pricing' },
     { label: t.nav.faq, href: '#faq' },
     { label: t.nav.contact, href: '#contact' },
+    { label: t.nav.about, href: '/about' },
+    { label: t.nav.blog, href: '/blog' },
     { label: t.nav.team, href: '/team' },
   ];
 
