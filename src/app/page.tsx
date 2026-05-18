@@ -242,19 +242,19 @@ export default function HomePage() {
       <DemoCredentialsSection />
 
       {/* Screenshots Section */}
-      <ScreenshotsSection />
+      <ScreenshotsSection lang={lang} />
 
       {/* Pricing Section */}
-      <PricingSection />
+      <PricingSection align={lang === 'ar' ? 'rtl' : 'ltr'} />
 
       {/* FAQ Section */}
-      <FAQSection />
+      <FAQSection lang={lang} />
 
       {/* Contact Section */}
-      <ContactSection />
+      <ContactSection lang={lang} />
 
       {/* Footer */}
-      <RichFooter />
+      <RichFooter lang={lang} />
     </div>
   );
 }
