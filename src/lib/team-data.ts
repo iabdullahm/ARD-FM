@@ -21,8 +21,8 @@ export interface TeamMember {
 export const teamMembers: TeamMember[] = [
   {
     id: "1",
-    nameAr: "عبدالله الجهواري",
-    nameEn: "Abdullah Al Jahwari",
+    nameAr: "عبدالله الجهوري",
+    nameEn: "Abdullah Al Johwari",
     roleAr: "المؤسس والرئيس التنفيذي",
     roleEn: "Founder & CEO",
     bioAr: "رائد أعمال عماني بخبرة 10+ سنوات في إدارة التكنولوجيا والعقارات. مؤسس رافد لتطوير حلول إدارة المرافق والعقارات.",

@@ -162,7 +162,7 @@ This is just the beginning of how AI will transform property management. Stay tu
     category: 'product-updates',
     categoryEn: 'Product Updates',
     categoryAr: 'تحديثات المنتج',
-    author: 'Abdullah Al Jahwari',
+    author: 'Abdullah Al Johwari',
     authorRole: 'Founder & CEO',
     authorImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&q=80',
     featuredImage:
