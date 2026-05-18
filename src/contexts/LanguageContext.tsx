@@ -23,8 +23,9 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     setDir(newDir);
     document.documentElement.lang = language;
     document.documentElement.dir = newDir;
-    document.documentElement.classList.add('dark');
-    
+    // Remove dark mode class to use light theme
+    document.documentElement.classList.remove('dark');
+
     // This will set the body classes, preserving existing ones from Next.js
     document.body.className = cn(
       'min-h-screen bg-background font-body antialiased',
