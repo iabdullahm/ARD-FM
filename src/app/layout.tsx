@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
+import { LanguageProvider } from '@/contexts/LanguageContext';
 
 const SITE_URL = 'https://www.rafidsystem.com';
 const SITE_NAME = 'Rafid | رافد';
@@ -61,6 +62,8 @@ export const metadata: Metadata = {
   },
   category: 'business',
 };
+
+export const dynamic = 'force-dynamic';
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -130,8 +133,10 @@ export default function RootLayout({
         />
       </head>
       <body suppressHydrationWarning>
-        {children}
-        <Toaster />
+        <LanguageProvider>
+          {children}
+          <Toaster />
+        </LanguageProvider>
       </body>
     </html>
   );
