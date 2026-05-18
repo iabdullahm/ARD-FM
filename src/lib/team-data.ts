@@ -29,7 +29,7 @@ export const teamMembers: TeamMember[] = [
     bioEn: "Omani entrepreneur with 10+ years of experience in technology and property management. Founder of Rafid to revolutionize facilities management.",
     email: "abdullah.j@creativetechno.net",
     phone: "+968 9297 5614",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&q=80",
+    image: "https://media.licdn.com/dms/image/v2/C5603AQEIBfTX90T1-w/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1516781386749?e=1780531200&v=beta&t=eEV6nohDNojBKIDMpiC-1tmrMa7Tp6x70n5QvFIvQ7g",
     department: "Leadership",
     yearsExperience: 10,
     social: {
