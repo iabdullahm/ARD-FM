@@ -1,6 +1,3 @@
-'use client';
-
-import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
@@ -31,7 +28,18 @@ interface BlogPostPageProps {
 }
 
 export default function BlogPostPage({ params }: BlogPostPageProps) {
-  const [lang, setLang] = useState<Lang>('ar');
+  // Determine language from slug
+  let lang: Lang = 'en';
+  for (const post of blogPosts) {
+    if (post.slugAr === params.slug) {
+      lang = 'ar';
+      break;
+    } else if (post.slugEn === params.slug) {
+      lang = 'en';
+      break;
+    }
+  }
+
   const isRtl = lang === 'ar';
   const t = STRINGS[lang];
 
@@ -73,12 +81,12 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
           <Link href="/" className="text-2xl font-bold text-[#FF7A00]">
             رافد
           </Link>
-          <button
-            onClick={() => setLang(lang === 'ar' ? 'en' : 'ar')}
+          <Link
+            href={`/blog/${lang === 'ar' ? 'rafid-mobile-app-launch' : 'تطبيق-رافد-موبايل'}`}
             className="px-4 py-2 bg-[#FF7A00] text-white rounded-lg font-semibold hover:bg-orange-600 transition"
           >
             {lang === 'ar' ? 'EN' : 'AR'}
-          </button>
+          </Link>
         </div>
       </div>
 
