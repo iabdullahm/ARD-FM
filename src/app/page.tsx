@@ -29,6 +29,7 @@ import { RichFooter } from '@/components/sections/RichFooter';
 import { TrustSection } from '@/components/sections/TrustSection';
 import { DemoCredentialsSection } from '@/components/sections/DemoCredentialsSection';
 import { ScreenshotsSection } from '@/components/sections/ScreenshotsSection';
+import { DemoAccessSection } from '@/components/sections/DemoAccessSection';
 
 type Lang = 'ar' | 'en';
 
@@ -247,6 +248,9 @@ export default function HomePage() {
 
       {/* Demo Credentials Section */}
       <DemoCredentialsSection />
+
+      {/* Demo Access Signup Section */}
+      <DemoAccessSection lang={lang} />
 
       {/* Screenshots Section */}
       <ScreenshotsSection lang={lang} />

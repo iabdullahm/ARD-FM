@@ -225,7 +225,7 @@ export default function DemoDashboard() {
                     columns={["الاسم", "النوع", "الوحدات", "الحالة"]}
                     onAdd={handleRestricted}
                     onAction={handleRestricted}
-                    renderRow={(p) => (
+                    renderRow={(p: typeof properties[0]) => (
                       <>
                         <td className="px-6 py-4 whitespace-nowrap">
                            <div className="flex items-center gap-3">
@@ -254,7 +254,7 @@ export default function DemoDashboard() {
                     columns={["الاسم", "الهاتف", "العقار المرتبط", "الحالة"]}
                     onAdd={handleRestricted}
                     onAction={handleRestricted}
-                    renderRow={(t) => (
+                    renderRow={(t: typeof tenants[0]) => (
                       <>
                         <td className="px-6 py-4 whitespace-nowrap">
                            <div className="flex items-center gap-3">
@@ -283,7 +283,7 @@ export default function DemoDashboard() {
                     columns={["نوع العقد", "المستأجر", "العقار", "تاريخ الانتهاء", "الحالة"]}
                     onAdd={handleRestricted}
                     onAction={handleRestricted}
-                    renderRow={(c) => (
+                    renderRow={(c: typeof contracts[0]) => (
                       <>
                         <td className="px-6 py-4 whitespace-nowrap">
                            <div className="flex items-center gap-3">
@@ -313,7 +313,7 @@ export default function DemoDashboard() {
                     onAddOverride={() => {
                        alert("تم رفع طلب صيانة تجريبي بنجاح!");
                     }}
-                    renderRow={(m) => (
+                    renderRow={(m: typeof maintenance[0]) => (
                       <>
                         <td className="px-6 py-4 whitespace-nowrap">
                            <div className="flex items-center gap-3">

@@ -1,202 +1,232 @@
 'use client';
 
-import { useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { ChevronLeft, ChevronRight, BarChart3, Home, Wrench, TrendingUp } from 'lucide-react';
 
-interface Screenshot {
-  id: number;
+interface ScreenshotItem {
+  id: string;
   titleEn: string;
   titleAr: string;
-  descriptionEn: string;
-  descriptionAr: string;
+  descEn: string;
+  descAr: string;
   image: string;
-  icon: React.ComponentType<{ className?: string }>;
-  features: string[];
+  featuresEn: string[];
   featuresAr: string[];
 }
 
-const screenshots: Screenshot[] = [
-  {
-    id: 1,
-    titleEn: 'Property Intelligence Command Center',
-    titleAr: 'مركز التحكم بذكاء العقارات',
-    descriptionEn: 'Unified dashboard combining all property metrics, revenue insights, occupancy rates, and operational KPIs in real-time. Monitor your entire property portfolio from a single screen.',
-    descriptionAr: 'لوحة تحكم موحدة تجمع جميع مقاييس العقارات والرؤى المالية ومعدلات الإشغال وأداء العمليات في الوقت الفعلي. راقب محفظة عقارك بالكامل من شاشة واحدة.',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=900&h=600&fit=crop&q=80',
-    icon: BarChart3,
-    features: ['Real-time KPI metrics', 'Revenue & income tracking', 'Occupancy analysis', 'System intelligence alerts'],
-    featuresAr: ['مقاييس الأداء الحية', 'تتبع الإيرادات والدخل', 'تحليل الإشغال', 'تنبيهات ذكاء النظام'],
-  },
-  {
-    id: 2,
-    titleEn: 'Intelligence Hub - Advanced Analytics',
-    titleAr: 'مركز الذكاء - التحليلات المتقدمة',
-    descriptionEn: 'Predictive analytics and intelligent decision command center powered by AI. Monitor critical risks, financial performance, and operational intelligence in real-time with AI-powered insights and automated recommendations.',
-    descriptionAr: 'مركز قيادة القرار التحليلي والمدعوم بالذكاء الاصطناعي. راقب المخاطر الحرجة والأداء المالي وذكاء العمليات في الوقت الفعلي مع الرؤى المدعومة بالذكاء الاصطناعي والتوصيات الآلية.',
-    image: 'https://images.unsplash.com/photo-1551530820-6786e6b00d47?w=900&h=600&fit=crop&q=80',
-    icon: TrendingUp,
-    features: ['AI Risk Detection', 'Real-time Analytics', 'Automated Recommendations', 'Performance Intelligence Modules'],
-    featuresAr: ['كشف المخاطر بالذكاء الاصطناعي', 'التحليلات الحية', 'التوصيات الآلية', 'وحدات ذكاء الأداء'],
-  },
-  {
-    id: 3,
-    titleEn: 'Smart Property Management System',
-    titleAr: 'نظام إدارة العقارات الذكي',
-    descriptionEn: 'Complete centralized management of properties, units, tenants, and leases. Digital document storage, automated workflows, and tenant communication all in one platform.',
-    descriptionAr: 'إدارة مركزية شاملة للعقارات والوحدات والمستأجرين واتفاقيات الإيجار. تخزين المستندات الرقمي وسير العمل الآلي والتواصل مع المستأجرين في منصة واحدة.',
-    image: 'https://images.unsplash.com/photo-1579621970563-430f63602022?w=900&h=600&fit=crop&q=80',
-    icon: Home,
-    features: ['Unit & tenant management', 'Lease agreement tracking', 'Digital document storage', 'Automated workflows'],
-    featuresAr: ['إدارة الوحدات والمستأجرين', 'تتبع اتفاقيات الإيجار', 'تخزين المستندات الرقمي', 'سير العمل الآلي'],
-  },
-  {
-    id: 4,
-    titleEn: 'Work Order & Maintenance Tracking',
-    titleAr: 'تتبع أوامر العمل والصيانة',
-    descriptionEn: 'Streamlined maintenance operations with intelligent work order creation, automatic scheduling, technician assignment, and real-time progress tracking. Reduce downtime with predictive maintenance.',
-    descriptionAr: 'عمليات صيانة مبسطة مع إنشاء أوامر عمل ذكية والجدولة التلقائية وتعيين الفنيين وتتبع التقدم في الوقت الفعلي. قلل وقت التوقف عن طريق الصيانة التنبؤية.',
-    image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=900&h=600&fit=crop&q=80',
-    icon: Wrench,
-    features: ['Intelligent work order creation', 'Automatic scheduling & routing', 'Technician assignment & tracking', 'Predictive maintenance'],
-    featuresAr: ['إنشاء أوامر عمل ذكية', 'الجدولة والتوجيه التلقائي', 'تعيين الفنيين والتتبع', 'الصيانة التنبؤية'],
-  },
-];
+interface ScreenshotsSectionProps {
+  lang?: 'ar' | 'en';
+}
 
-export function ScreenshotsSection({ lang = 'ar' }: { lang?: 'ar' | 'en' }) {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const isRtl = lang === 'ar';
+export function ScreenshotsSection({ lang = 'ar' }: ScreenshotsSectionProps) {
+  const isArabic = lang === 'ar';
 
-  const current = screenshots[activeIndex];
-  const Icon = current.icon;
+  const screenshots: ScreenshotItem[] = [
+    {
+      id: 'dashboard',
+      titleEn: 'AI-Powered Analytics Dashboard',
+      titleAr: 'لوحة التحكم التحليلية بقوة الذكاء الاصطناعي',
+      descEn: 'Get instant insights into your entire property portfolio. Real-time KPIs, occupancy rates, maintenance metrics, and financial overviews at a glance.',
+      descAr: 'احصل على رؤى فورية حول محفظتك العقارية بأكملها. مؤشرات الأداء الرئيسية، معدلات الإشغال، مقاييس الصيانة، وملخصات مالية في لمحة واحدة.',
+      image: '/screenshots/dashboard.webp',
+      featuresEn: ['Real-time KPIs', 'Occupancy Tracking', 'Revenue Insights', 'System Intelligence'],
+      featuresAr: ['مؤشرات KPI فورية', 'تتبع الإشغال', 'رؤى الإيرادات', 'ذكاء النظام']
+    },
+    {
+      id: 'work-orders',
+      titleEn: 'Streamlined Maintenance Management',
+      titleAr: 'إدارة الصيانة المبسطة',
+      descEn: 'Create, assign, and track work orders instantly. Never miss a maintenance deadline with status tracking and priority management.',
+      descAr: 'أنشئ وعيّن وتابع أوامر العمل على الفور. لا تفوت مواعيد الصيانة أبداً مع تتبع الحالة وإدارة الأولويات.',
+      image: '/screenshots/work-orders.webp',
+      featuresEn: ['Quick Creation', 'Status Tracking', 'Export Reports', 'Priority Management'],
+      featuresAr: ['إنشاء سريع', 'تتبع الحالة', 'تصدير التقارير', 'إدارة الأولويات']
+    },
+    {
+      id: 'properties',
+      titleEn: 'Master Control of All Properties',
+      titleAr: 'السيطرة الكاملة على جميع العقارات',
+      descEn: 'Manage multiple properties, buildings, and units from one unified dashboard. Track occupancy, building details, and portfolio health.',
+      descAr: 'أدر عقارات وأبنية ووحدات متعددة من لوحة تحكم موحدة. تابع الإشغال وتفاصيل المباني وصحة المحفظة.',
+      image: '/screenshots/properties.webp',
+      featuresEn: ['Portfolio Overview', 'Occupancy Metrics', 'Unit Tracking', 'Building Management'],
+      featuresAr: ['نظرة عامة على المحفظة', 'مقاييس الإشغال', 'تتبع الوحدات', 'إدارة المباني']
+    },
+    {
+      id: 'tenants',
+      titleEn: 'Tenant & Resident Management',
+      titleAr: 'إدارة المستأجرين والمقيمين',
+      descEn: 'Build strong tenant relationships with centralized contact information, lease tracking, and communication tools.',
+      descAr: 'بناء علاقات قوية مع المستأجرين من خلال معلومات الاتصال المركزية وتتبع العقود وأدوات الاتصال.',
+      image: '/screenshots/tenants.webp',
+      featuresEn: ['Contact Management', 'Lease Tracking', 'Active Leases', 'Tenant Profiles'],
+      featuresAr: ['إدارة جهات الاتصال', 'تتبع العقود', 'العقود النشطة', 'ملفات المستأجرين']
+    },
+    {
+      id: 'invoices',
+      titleEn: 'Financial Management & Billing',
+      titleAr: 'إدارة المالية والفواتير',
+      descEn: 'Automate invoicing, track receivables, and monitor payment status. Generate invoices with one click.',
+      descAr: 'أتمتة الفواتير، تتبع المستحقات، ومراقبة حالة الدفع. أنشئ الفواتير بضغطة واحدة.',
+      image: '/screenshots/invoices.webp',
+      featuresEn: ['Auto-Invoicing', 'Receivables Tracking', 'Payment Status', 'Financial Reports'],
+      featuresAr: ['فواتير تلقائية', 'تتبع المستحقات', 'حالة الدفع', 'التقارير المالية']
+    }
+  ];
 
-  const handlePrevious = () => {
-    setActiveIndex((prev) => (prev === 0 ? screenshots.length - 1 : prev - 1));
-  };
-
-  const handleNext = () => {
-    setActiveIndex((prev) => (prev === screenshots.length - 1 ? 0 : prev + 1));
-  };
+  const features = isArabic
+    ? {
+        sectionTitle: 'النظام في العمل',
+        sectionDesc: 'استكشف كيف يعمل نظام رافد عبر جميع وحدات العمل'
+      }
+    : {
+        sectionTitle: 'Rafid in Action',
+        sectionDesc: 'Explore how Rafid works across all business modules'
+      };
 
   return (
-    <section id="screenshots" className="py-24 bg-gradient-to-b from-slate-50 to-white overflow-hidden">
+    <section id="screenshots" className="py-20 bg-gradient-to-b from-slate-50 to-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Header */}
+        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center max-w-3xl mx-auto mb-16"
+          className="text-center mb-16"
         >
-          <span className="text-sm font-bold uppercase tracking-widest text-[#FF7A00]">
-            {isRtl ? 'استكشف النظام' : 'Explore the System'}
-          </span>
-          <h2 className="mt-3 text-3xl font-black text-slate-900 sm:text-4xl">
-            {isRtl ? 'الميزات الأساسية لرافد' : 'Core Features of Rafid'}
+          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+            {features.sectionTitle}
           </h2>
-          <p className="mt-4 text-lg text-slate-600">
-            {isRtl
-              ? 'استكشف أقوى أدوات إدارة العقارات والمنشآت المتاحة اليوم'
-              : 'Discover the most powerful property and facilities management tools available today'}
+          <p className="text-xl text-slate-600 max-w-2xl mx-auto">
+            {features.sectionDesc}
           </p>
         </motion.div>
 
-        {/* Main Carousel */}
-        <div className="grid gap-12 lg:grid-cols-2 items-center">
-          {/* Image */}
-          <motion.div
-            key={activeIndex}
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-            className="relative"
-          >
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-slate-200">
-              <Image
-                src={current.image}
-                alt={isRtl ? current.titleAr : current.titleEn}
-                width={600}
-                height={400}
-                quality={85}
-                priority
-                className="w-full h-auto object-cover"
-              />
-              <div className="absolute inset-0 ring-1 ring-inset ring-white/10" />
-            </div>
+        {/* Screenshots Grid */}
+        <div className="space-y-24">
+          {screenshots.map((screenshot, index) => {
+            const isEven = index % 2 === 0;
+            const features_text = isArabic ? screenshot.featuresAr : screenshot.featuresEn;
+            const title = isArabic ? screenshot.titleAr : screenshot.titleEn;
+            const desc = isArabic ? screenshot.descAr : screenshot.descEn;
 
-            {/* Navigation Arrows */}
-            <button
-              onClick={handlePrevious}
-              className={`absolute ${isRtl ? 'right-4' : 'left-4'} top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 hover:bg-white transition-colors shadow-lg`}
-              aria-label="Previous"
-            >
-              <ChevronLeft className="h-6 w-6 text-slate-900" />
-            </button>
-            <button
-              onClick={handleNext}
-              className={`absolute ${isRtl ? 'left-4' : 'right-4'} top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 hover:bg-white transition-colors shadow-lg`}
-              aria-label="Next"
-            >
-              <ChevronRight className="h-6 w-6 text-slate-900" />
-            </button>
-          </motion.div>
+            return (
+              <motion.div
+                key={screenshot.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className={`grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center ${
+                  !isEven ? 'lg:flex-row-reverse' : ''
+                }`}
+              >
+                {/* Text Content */}
+                <div
+                  className={`${
+                    !isEven ? 'lg:order-2' : ''
+                  } flex flex-col justify-center`}
+                >
+                  <motion.div
+                    initial={{ opacity: 0, x: isArabic ? 20 : -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.6, delay: index * 0.1 + 0.2 }}
+                    viewport={{ once: true }}
+                  >
+                    <h3 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4 leading-tight">
+                      {title}
+                    </h3>
+                    <p className="text-lg text-slate-600 mb-8 leading-relaxed">
+                      {desc}
+                    </p>
 
-          {/* Content */}
-          <motion.div
-            key={`content-${activeIndex}`}
-            initial={{ opacity: 0, x: isRtl ? -20 : 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <div className="flex items-start gap-4 mb-6">
-              <div className="flex-shrink-0">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#FF7A00]/10 text-[#FF7A00]">
-                  <Icon className="h-6 w-6" />
+                    {/* Features Grid */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                      {features_text.map((feature, featureIndex) => (
+                        <motion.div
+                          key={feature}
+                          initial={{ opacity: 0, x: isArabic ? 10 : -10 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          transition={{
+                            duration: 0.5,
+                            delay: index * 0.1 + featureIndex * 0.05 + 0.3
+                          }}
+                          viewport={{ once: true }}
+                          className="flex items-center gap-3 p-3 rounded-lg bg-blue-50 hover:bg-blue-100 transition-colors"
+                        >
+                          <div className="flex-shrink-0 w-2 h-2 bg-gradient-to-r from-blue-600 to-blue-400 rounded-full" />
+                          <span className="text-sm md:text-base font-medium text-slate-700">
+                            {feature}
+                          </span>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </motion.div>
                 </div>
-              </div>
-              <div>
-                <h3 className="text-3xl font-bold text-slate-900">
-                  {isRtl ? current.titleAr : current.titleEn}
-                </h3>
-              </div>
-            </div>
 
-            <p className="text-lg text-slate-600 mb-8">
-              {isRtl ? current.descriptionAr : current.descriptionEn}
-            </p>
+                {/* Screenshot Image */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 + 0.1 }}
+                  viewport={{ once: true }}
+                  className={`${!isEven ? 'lg:order-1' : ''}`}
+                >
+                  <div className="relative rounded-2xl overflow-hidden shadow-2xl hover:shadow-3xl transition-shadow duration-300">
+                    {/* Image Container */}
+                    <div className="relative bg-white rounded-xl overflow-hidden">
+                      <Image
+                        src={screenshot.image}
+                        alt={title}
+                        width={600}
+                        height={400}
+                        quality={85}
+                        className="w-full h-auto object-cover"
+                        priority={index === 0}
+                        loading={index === 0 ? 'eager' : 'lazy'}
+                      />
 
-            {/* Features */}
-            <div className="mb-8">
-              <h4 className="font-semibold text-slate-900 mb-4">
-                {isRtl ? 'المميزات الرئيسية:' : 'Key Features:'}
-              </h4>
-              <ul className="space-y-3">
-                {(isRtl ? current.featuresAr : current.features).map((feature, idx) => (
-                  <li key={idx} className="flex items-start gap-3">
-                    <span className="text-[#FF7A00] font-bold mt-1">✓</span>
-                    <span className="text-slate-600">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+                      {/* Overlay for Better Visual */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/5 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300" />
+                    </div>
+                  </div>
 
-            {/* Indicators */}
-            <div className="flex gap-2">
-              {screenshots.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setActiveIndex(idx)}
-                  className={`h-2 rounded-full transition-all ${
-                    idx === activeIndex ? 'bg-[#FF7A00] w-8' : 'bg-slate-300 w-2'
-                  }`}
-                  aria-label={`Go to slide ${idx + 1}`}
-                />
-              ))}
-            </div>
-          </motion.div>
+                  {/* Caption Below Image */}
+                  <p className="mt-4 text-center text-sm text-slate-500 italic">
+                    {isArabic ? 'لقطة شاشة من النظام' : 'System Screenshot'}
+                  </p>
+                </motion.div>
+              </motion.div>
+            );
+          })}
         </div>
+
+        {/* CTA Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+          viewport={{ once: true }}
+          className="mt-24 text-center p-8 rounded-2xl bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-100"
+        >
+          <h3 className="text-2xl font-bold text-slate-900 mb-4">
+            {isArabic ? 'هل أنت مستعد للبدء؟' : 'Ready to Get Started?'}
+          </h3>
+          <p className="text-lg text-slate-600 mb-6">
+            {isArabic
+              ? 'جرب نظام رافد مجاناً الآن واكتشف كيف يمكنك تحسين إدارة عقاراتك'
+              : 'Try Rafid for free today and discover how you can improve your property management'}
+          </p>
+          <a
+            href="https://app.rafidsystem.com/c/demo/dashboard"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+          >
+            {isArabic ? '🚀 جرب Demo الآن' : '🚀 Try Demo Now'}
+          </a>
+        </motion.div>
       </div>
     </section>
   );

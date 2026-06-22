@@ -2,19 +2,31 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { Mail, Phone, MapPin, Send, CheckCircle2 } from "lucide-react"
+import { Mail, Phone, MapPin, Send, CheckCircle2, AlertCircle } from "lucide-react"
+
+type FormErrors = {
+  name?: string
+  company?: string
+  email?: string
+  phone?: string
+}
+
+const initialFormData = {
+  name: "",
+  company: "",
+  email: "",
+  phone: "",
+  units: "",
+  message: "",
+  honeypot: "",
+}
 
 export function ContactSection({ lang = "ar" }: { lang?: "ar" | "en" }) {
   const isRtl = lang === "ar"
   const [submitted, setSubmitted] = useState(false)
-  const [formData, setFormData] = useState({
-    name: "",
-    company: "",
-    email: "",
-    phone: "",
-    units: "",
-    message: "",
-  })
+  const [isLoading, setIsLoading] = useState(false)
+  const [formData, setFormData] = useState(initialFormData)
+  const [errors, setErrors] = useState<FormErrors>({})
 
   const t = {
     eyebrow: isRtl ? "تواصل معنا" : "Contact Us",
@@ -31,24 +43,104 @@ export function ContactSection({ lang = "ar" }: { lang?: "ar" | "en" }) {
     submit: isRtl ? "أرسل الطلب" : "Send Request",
     sending: isRtl ? "جارٍ الإرسال..." : "Sending...",
     success: isRtl
-      ? "تم استلام طلبك! سنتواصل معك قريباً."
-      : "Request received! We'll be in touch soon.",
+      ? "تم استلام طلبك! سنتواصل معك خلال 24 ساعة."
+      : "Request received! We'll contact you within 24 hours.",
     contactInfo: isRtl ? "معلومات التواصل" : "Contact Information",
     workingHours: isRtl ? "ساعات العمل" : "Working Hours",
     hours: isRtl
       ? "الأحد - الخميس: 8 ص - 5 م (توقيت مسقط)"
       : "Sunday - Thursday: 8 AM - 5 PM (Muscat time)",
     location: isRtl ? "مسقط، سلطنة عُمان" : "Muscat, Sultanate of Oman",
+    nameRequired: isRtl ? "الاسم مطلوب" : "Name is required",
+    nameMinLength: isRtl ? "الاسم يجب أن يكون 2 حرف على الأقل" : "Name must be at least 2 characters",
+    companyRequired: isRtl ? "اسم الشركة مطلوب" : "Company name is required",
+    emailRequired: isRtl ? "البريد الإلكتروني مطلوب" : "Email is required",
+    emailInvalid: isRtl ? "البريد الإلكتروني غير صحيح" : "Email is invalid",
+    phoneInvalid: isRtl ? "رقم الهاتف غير صحيح" : "Phone number is invalid",
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(email)
+  }
+
+  const validatePhone = (phone: string) => {
+    if (!phone) return true
+    const phoneRegex = /^[+]?[(]?[0-9]{1,4}[)]?[-\s.]?[(]?[0-9]{1,4}[)]?[-\s.]?[0-9]{1,9}$/
+    return phoneRegex.test(phone)
+  }
+
+  const validateForm = () => {
+    const newErrors: FormErrors = {}
+
+    if (!formData.name.trim()) {
+      newErrors.name = t.nameRequired
+    } else if (formData.name.trim().length < 2) {
+      newErrors.name = t.nameMinLength
+    }
+
+    if (!formData.company.trim()) {
+      newErrors.company = t.companyRequired
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = t.emailRequired
+    } else if (!validateEmail(formData.email)) {
+      newErrors.email = t.emailInvalid
+    }
+
+    if (formData.phone && !validatePhone(formData.phone)) {
+      newErrors.phone = t.phoneInvalid
+    }
+
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // In production, this would POST to an API endpoint or CRM webhook
-    setSubmitted(true)
-    // Simulate network request
-    setTimeout(() => {
-      // Reset state after some time if needed
-    }, 100)
+
+    if (formData.honeypot) {
+      console.log("Honeypot triggered, ignoring submission")
+      return
+    }
+
+    if (!validateForm()) {
+      return
+    }
+
+    setIsLoading(true)
+
+    try {
+      await new Promise(resolve => setTimeout(resolve, 800))
+      setSubmitted(true)
+      setFormData(initialFormData)
+      setErrors({})
+
+      setTimeout(() => {
+        setSubmitted(false)
+      }, 5000)
+    } catch (error) {
+      console.error("Form submission error:", error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target
+    setFormData(prev => ({
+      ...prev,
+      [name]: value,
+    }))
+    if (errors[name as keyof FormErrors]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: undefined,
+      }))
+    }
   }
 
   return (
@@ -65,7 +157,6 @@ export function ContactSection({ lang = "ar" }: { lang?: "ar" | "en" }) {
         </div>
 
         <div className="grid gap-10 lg:grid-cols-[1fr_1.3fr]">
-          {/* Info column */}
           <div className="rounded-3xl bg-slate-900 p-10 text-white">
             <h3 className="text-xl font-bold mb-8">{t.contactInfo}</h3>
             <ul className="space-y-6">
@@ -78,11 +169,11 @@ export function ContactSection({ lang = "ar" }: { lang?: "ar" | "en" }) {
                     {t.email}
                   </p>
                   <a
-                    href="mailto:sales@rafidsystem.com"
+                    href="mailto:abdullah.j@creativetechno.net"
                     className="mt-1 block text-base font-bold text-white hover:text-[#FF7A00] transition"
                     dir="ltr"
                   >
-                    sales@rafidsystem.com
+                    abdullah.j@creativetechno.net
                   </a>
                 </div>
               </li>
@@ -95,11 +186,11 @@ export function ContactSection({ lang = "ar" }: { lang?: "ar" | "en" }) {
                     {t.phone}
                   </p>
                   <a
-                    href="tel:+96824000000"
+                    href="tel:+96892975614"
                     className="mt-1 block text-base font-bold text-white hover:text-[#FF7A00] transition"
                     dir="ltr"
                   >
-                    +968 2400 0000
+                    +968 9297 5614
                   </a>
                 </div>
               </li>
@@ -124,7 +215,6 @@ export function ContactSection({ lang = "ar" }: { lang?: "ar" | "en" }) {
             </div>
           </div>
 
-          {/* Form column */}
           <div className="rounded-3xl border border-slate-200 bg-[#F8FAFC] p-10">
             {submitted ? (
               <motion.div
@@ -141,6 +231,16 @@ export function ContactSection({ lang = "ar" }: { lang?: "ar" | "en" }) {
               </motion.div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-5">
+                <input
+                  type="text"
+                  name="honeypot"
+                  value={formData.honeypot}
+                  onChange={handleChange}
+                  style={{ display: 'none' }}
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
+
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
                     <label className="block text-sm font-bold text-slate-700 mb-2">
@@ -148,13 +248,21 @@ export function ContactSection({ lang = "ar" }: { lang?: "ar" | "en" }) {
                     </label>
                     <input
                       type="text"
-                      required
+                      name="name"
                       value={formData.name}
-                      onChange={(e) =>
-                        setFormData({ ...formData, name: e.target.value })
-                      }
-                      className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-900 outline-none focus:border-[#FF7A00] focus:ring-2 focus:ring-orange-100"
+                      onChange={handleChange}
+                      className={`w-full rounded-xl border ${
+                        errors.name ? 'border-red-400' : 'border-slate-200'
+                      } bg-white px-4 py-3 text-sm font-medium text-slate-900 outline-none focus:border-[#FF7A00] focus:ring-2 ${
+                        errors.name ? 'focus:ring-red-100' : 'focus:ring-orange-100'
+                      }`}
                     />
+                    {errors.name && (
+                      <div className="mt-1.5 flex items-center gap-1.5 text-red-600">
+                        <AlertCircle className="h-4 w-4" />
+                        <span className="text-xs font-medium">{errors.name}</span>
+                      </div>
+                    )}
                   </div>
                   <div>
                     <label className="block text-sm font-bold text-slate-700 mb-2">
@@ -162,13 +270,21 @@ export function ContactSection({ lang = "ar" }: { lang?: "ar" | "en" }) {
                     </label>
                     <input
                       type="text"
-                      required
+                      name="company"
                       value={formData.company}
-                      onChange={(e) =>
-                        setFormData({ ...formData, company: e.target.value })
-                      }
-                      className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-900 outline-none focus:border-[#FF7A00] focus:ring-2 focus:ring-orange-100"
+                      onChange={handleChange}
+                      className={`w-full rounded-xl border ${
+                        errors.company ? 'border-red-400' : 'border-slate-200'
+                      } bg-white px-4 py-3 text-sm font-medium text-slate-900 outline-none focus:border-[#FF7A00] focus:ring-2 ${
+                        errors.company ? 'focus:ring-red-100' : 'focus:ring-orange-100'
+                      }`}
                     />
+                    {errors.company && (
+                      <div className="mt-1.5 flex items-center gap-1.5 text-red-600">
+                        <AlertCircle className="h-4 w-4" />
+                        <span className="text-xs font-medium">{errors.company}</span>
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -179,14 +295,22 @@ export function ContactSection({ lang = "ar" }: { lang?: "ar" | "en" }) {
                     </label>
                     <input
                       type="email"
-                      required
+                      name="email"
                       dir="ltr"
                       value={formData.email}
-                      onChange={(e) =>
-                        setFormData({ ...formData, email: e.target.value })
-                      }
-                      className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-900 outline-none focus:border-[#FF7A00] focus:ring-2 focus:ring-orange-100"
+                      onChange={handleChange}
+                      className={`w-full rounded-xl border ${
+                        errors.email ? 'border-red-400' : 'border-slate-200'
+                      } bg-white px-4 py-3 text-sm font-medium text-slate-900 outline-none focus:border-[#FF7A00] focus:ring-2 ${
+                        errors.email ? 'focus:ring-red-100' : 'focus:ring-orange-100'
+                      }`}
                     />
+                    {errors.email && (
+                      <div className="mt-1.5 flex items-center gap-1.5 text-red-600">
+                        <AlertCircle className="h-4 w-4" />
+                        <span className="text-xs font-medium">{errors.email}</span>
+                      </div>
+                    )}
                   </div>
                   <div>
                     <label className="block text-sm font-bold text-slate-700 mb-2">
@@ -194,13 +318,22 @@ export function ContactSection({ lang = "ar" }: { lang?: "ar" | "en" }) {
                     </label>
                     <input
                       type="tel"
+                      name="phone"
                       dir="ltr"
                       value={formData.phone}
-                      onChange={(e) =>
-                        setFormData({ ...formData, phone: e.target.value })
-                      }
-                      className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-900 outline-none focus:border-[#FF7A00] focus:ring-2 focus:ring-orange-100"
+                      onChange={handleChange}
+                      className={`w-full rounded-xl border ${
+                        errors.phone ? 'border-red-400' : 'border-slate-200'
+                      } bg-white px-4 py-3 text-sm font-medium text-slate-900 outline-none focus:border-[#FF7A00] focus:ring-2 ${
+                        errors.phone ? 'focus:ring-red-100' : 'focus:ring-orange-100'
+                      }`}
                     />
+                    {errors.phone && (
+                      <div className="mt-1.5 flex items-center gap-1.5 text-red-600">
+                        <AlertCircle className="h-4 w-4" />
+                        <span className="text-xs font-medium">{errors.phone}</span>
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -209,10 +342,9 @@ export function ContactSection({ lang = "ar" }: { lang?: "ar" | "en" }) {
                     {t.units}
                   </label>
                   <select
+                    name="units"
                     value={formData.units}
-                    onChange={(e) =>
-                      setFormData({ ...formData, units: e.target.value })
-                    }
+                    onChange={handleChange}
                     className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-900 outline-none focus:border-[#FF7A00] focus:ring-2 focus:ring-orange-100"
                   >
                     <option value="">—</option>
@@ -228,21 +360,21 @@ export function ContactSection({ lang = "ar" }: { lang?: "ar" | "en" }) {
                     {t.message}
                   </label>
                   <textarea
+                    name="message"
                     rows={4}
                     value={formData.message}
-                    onChange={(e) =>
-                      setFormData({ ...formData, message: e.target.value })
-                    }
+                    onChange={handleChange}
                     className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-900 outline-none focus:border-[#FF7A00] focus:ring-2 focus:ring-orange-100 resize-none"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-[#FF7A00] px-8 py-4 text-sm font-bold text-white shadow-[0_10px_20px_rgba(255,122,0,0.2)] transition hover:bg-orange-600 hover:-translate-y-0.5"
+                  disabled={isLoading}
+                  className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-[#FF7A00] px-8 py-4 text-sm font-bold text-white shadow-[0_10px_20px_rgba(255,122,0,0.2)] transition hover:bg-orange-600 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#FF7A00]"
                 >
                   <Send className="h-4 w-4" />
-                  {t.submit}
+                  {isLoading ? t.sending : t.submit}
                 </button>
               </form>
             )}

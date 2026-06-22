@@ -12,10 +12,10 @@ export const content = {
       login: 'تسجيل الدخول',
     },
     hero: {
-      headline: 'إدارة عقاراتك بذكاء… مع رافد',
-      subheadline: 'نظام متكامل لإدارة العقارات والمرافق بسهولة واحترافية.',
-      cta1: 'اطلب عرض',
-      cta2: 'شاهد النظام',
+      headline: '⚡ أدر 500+ عقار من لوحة تحكم واحدة',
+      subheadline: 'خفّض تكاليف الصيانة بـ 40% 📉 | زيادة الإنتاجية بـ 60% 📈 | موثوق من قبل 500+ شركة ✅',
+      cta1: 'احجز عرضاً تجريبياً',
+      cta2: 'جرّب النظام مجاناً',
       cards: {
         contracts: 'العقود',
         revenue: 'الإيرادات',
@@ -102,10 +102,10 @@ export const content = {
       login: 'Log In',
     },
     hero: {
-      headline: 'Manage Your Properties Intelligently... with Rafid',
-      subheadline: 'An integrated system for managing properties and facilities with ease and professionalism.',
-      cta1: 'Request Demo',
-      cta2: 'Watch the Platform',
+      headline: '⚡ Manage 500+ Properties from One Dashboard',
+      subheadline: 'Cut maintenance costs by 40% 📉 | Boost productivity by 60% 📈 | Trusted by 500+ companies ✅',
+      cta1: 'Book a Demo',
+      cta2: 'Try for Free',
       cards: {
         contracts: 'Contracts',
         revenue: 'Revenue',
