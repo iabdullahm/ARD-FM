@@ -31,8 +31,6 @@ export function RichFooter({ lang = "ar" }: { lang?: "ar" | "en" }) {
     legalLinks: [
       { label: isRtl ? "سياسة الخصوصية" : "Privacy Policy", href: "/privacy" },
       { label: isRtl ? "شروط الاستخدام" : "Terms of Service", href: "/terms" },
-      { label: isRtl ? "سياسة ملفات الارتباط" : "Cookies", href: "/cookies" },
-      { label: isRtl ? "اتفاقية مستوى الخدمة (SLA)" : "Service Level Agreement", href: "/sla" },
     ],
     company_legal: isRtl
       ? "Creative Techno LLC · س.ت 1234567 · سلطنة عُمان"

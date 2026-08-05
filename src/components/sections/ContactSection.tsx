@@ -21,10 +21,13 @@ const initialFormData = {
   honeypot: "",
 }
 
+const FORM_ENDPOINT = "https://formspree.io/f/mzbnblrj"
+
 export function ContactSection({ lang = "ar" }: { lang?: "ar" | "en" }) {
   const isRtl = lang === "ar"
   const [submitted, setSubmitted] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [submitError, setSubmitError] = useState("")
   const [formData, setFormData] = useState(initialFormData)
   const [errors, setErrors] = useState<FormErrors>({})
 
@@ -57,6 +60,9 @@ export function ContactSection({ lang = "ar" }: { lang?: "ar" | "en" }) {
     emailRequired: isRtl ? "البريد الإلكتروني مطلوب" : "Email is required",
     emailInvalid: isRtl ? "البريد الإلكتروني غير صحيح" : "Email is invalid",
     phoneInvalid: isRtl ? "رقم الهاتف غير صحيح" : "Phone number is invalid",
+    submitFailed: isRtl
+      ? "حدث خطأ أثناء الإرسال. يرجى المحاولة مرة أخرى أو التواصل معنا مباشرة عبر البريد الإلكتروني."
+      : "Something went wrong while sending. Please try again or contact us directly by email.",
   }
 
   const validateEmail = (email: string) => {
@@ -110,18 +116,41 @@ export function ContactSection({ lang = "ar" }: { lang?: "ar" | "en" }) {
     }
 
     setIsLoading(true)
+    setSubmitError("")
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 800))
+      const response = await fetch(FORM_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          company: formData.company,
+          email: formData.email,
+          phone: formData.phone,
+          units: formData.units,
+          message: formData.message,
+          language: isRtl ? "Arabic" : "English",
+          source: "Contact Section - Book a Demo",
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error(`Form submission failed with status ${response.status}`)
+      }
+
       setSubmitted(true)
       setFormData(initialFormData)
       setErrors({})
 
       setTimeout(() => {
         setSubmitted(false)
-      }, 5000)
+      }, 8000)
     } catch (error) {
       console.error("Form submission error:", error)
+      setSubmitError(t.submitFailed)
     } finally {
       setIsLoading(false)
     }
@@ -135,6 +164,9 @@ export function ContactSection({ lang = "ar" }: { lang?: "ar" | "en" }) {
       ...prev,
       [name]: value,
     }))
+    if (submitError) {
+      setSubmitError("")
+    }
     if (errors[name as keyof FormErrors]) {
       setErrors(prev => ({
         ...prev,
@@ -367,6 +399,16 @@ export function ContactSection({ lang = "ar" }: { lang?: "ar" | "en" }) {
                     className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-900 outline-none focus:border-[#FF7A00] focus:ring-2 focus:ring-orange-100 resize-none"
                   />
                 </div>
+
+                {submitError && (
+                  <div
+                    role="alert"
+                    className="flex items-start gap-2.5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-red-700"
+                  >
+                    <AlertCircle className="h-5 w-5 shrink-0 mt-0.5" />
+                    <span className="text-sm font-medium">{submitError}</span>
+                  </div>
+                )}
 
                 <button
                   type="submit"

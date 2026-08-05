@@ -13,7 +13,7 @@ const FAQS_AR: FAQ[] = [
   },
   {
     q: "أين تُخزَّن بياناتي؟",
-    a: "تُخزَّن بياناتك في مراكز بيانات سحابية معتمدة بمستوى توفر 99.99%، ومحمية بتشفير AES-256 أثناء النقل والتخزين، مع نسخ احتياطي يومي تلقائي.",
+    a: "تُخزَّن بياناتك في مراكز بيانات سحابية معتمدة عالية التوفر، ومحمية بتشفير AES-256 أثناء النقل والتخزين، مع نسخ احتياطي يومي تلقائي.",
   },
   {
     q: "هل يمكن ترحيل بياناتي من نظام قديم أو من Excel؟",
@@ -48,7 +48,7 @@ const FAQS_EN: FAQ[] = [
   },
   {
     q: "Where is my data stored?",
-    a: "Your data is stored in certified cloud data centers with 99.99% uptime SLA, protected by AES-256 encryption in transit and at rest, with automatic daily backups.",
+    a: "Your data is stored in certified high-availability cloud data centers, protected by AES-256 encryption in transit and at rest, with automatic daily backups.",
   },
   {
     q: "Can I migrate data from a legacy system or Excel?",
@@ -116,7 +116,7 @@ export function FAQSection({ lang = "ar" }: { lang?: "ar" | "en" }) {
               >
                 <button
                   onClick={() => setOpenIndex(isOpen ? null : index)}
-                  className="flex w-full items-center justify-between gap-4 px-6 py-5 text-right"
+                  className={`flex w-full items-center justify-between gap-4 px-6 py-5 ${isRtl ? "text-right" : "text-left"}`}
                   aria-expanded={isOpen}
                 >
                   <span className="flex-1 text-base font-bold text-slate-900 sm:text-lg">

@@ -104,9 +104,9 @@ export function DemoAccessSection({ lang = 'ar' }: DemoAccessSectionProps) {
             viewport={{ once: true }}
           >
             <div className="mb-8">
-              <div className="inline-block mb-4 px-4 py-2 bg-gradient-to-r from-blue-100 to-purple-100 rounded-full">
+              <div className="inline-block mb-4 px-4 py-2 bg-orange-100 rounded-full">
                 <span className="text-sm font-semibold text-slate-700">
-                  {isArabic ? '🚀 جرب النظام الآن' : '🚀 Try Now'}
+                  {isArabic ? 'جرب النظام الآن' : 'Try Now'}
                 </span>
               </div>
               <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
@@ -130,7 +130,7 @@ export function DemoAccessSection({ lang = 'ar' }: DemoAccessSectionProps) {
                   viewport={{ once: true }}
                   className="flex items-center gap-4"
                 >
-                  <div className="flex-shrink-0 w-6 h-6 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center">
+                  <div className="flex-shrink-0 w-6 h-6 bg-[#FF7A00] rounded-full flex items-center justify-center">
                     <CheckCircle2 className="w-4 h-4 text-white" />
                   </div>
                   <span className="text-lg text-slate-700 font-medium">{benefit}</span>
@@ -140,16 +140,16 @@ export function DemoAccessSection({ lang = 'ar' }: DemoAccessSectionProps) {
 
             {/* Stats */}
             <div className="mt-12 grid grid-cols-2 gap-6">
-              <div className="p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg">
-                <div className="text-2xl font-bold text-blue-900 mb-1">500+</div>
-                <p className="text-sm text-blue-700">
-                  {isArabic ? 'مستخدم نشط' : 'Active Users'}
+              <div className="p-4 bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg">
+                <div className="text-2xl font-bold text-orange-900 mb-1">24/7</div>
+                <p className="text-sm text-orange-700">
+                  {isArabic ? 'دعم فني متواصل' : 'Technical Support'}
                 </p>
               </div>
-              <div className="p-4 bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg">
-                <div className="text-2xl font-bold text-purple-900 mb-1">99%</div>
-                <p className="text-sm text-purple-700">
-                  {isArabic ? 'رضا العملاء' : 'Satisfaction'}
+              <div className="p-4 bg-gradient-to-br from-slate-100 to-slate-200 rounded-lg">
+                <div className="text-2xl font-bold text-slate-900 mb-1">AR/EN</div>
+                <p className="text-sm text-slate-600">
+                  {isArabic ? 'واجهة ثنائية اللغة' : 'Bilingual Interface'}
                 </p>
               </div>
             </div>
@@ -204,14 +204,14 @@ export function DemoAccessSection({ lang = 'ar' }: DemoAccessSectionProps) {
                     {isArabic ? 'الاسم الكامل *' : 'Full Name *'}
                   </label>
                   <div className="relative">
-                    <User className="absolute left-3 top-3.5 w-5 h-5 text-slate-400" />
+                    <User className={`absolute top-3.5 w-5 h-5 text-slate-400 ${isArabic ? "right-3" : "left-3"}`} />
                     <input
                       type="text"
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
                       placeholder={isArabic ? 'أدخل اسمك الكامل' : 'Enter your full name'}
-                      className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                      className={`w-full ${isArabic ? "pr-10 pl-4" : "pl-10 pr-4"} py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition`}
                       required
                     />
                   </div>
@@ -223,14 +223,14 @@ export function DemoAccessSection({ lang = 'ar' }: DemoAccessSectionProps) {
                     {isArabic ? 'البريد الإلكتروني *' : 'Email Address *'}
                   </label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-3.5 w-5 h-5 text-slate-400" />
+                    <Mail className={`absolute top-3.5 w-5 h-5 text-slate-400 ${isArabic ? "right-3" : "left-3"}`} />
                     <input
                       type="email"
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
                       placeholder={isArabic ? 'أدخل بريدك الإلكتروني' : 'your@email.com'}
-                      className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                      className={`w-full ${isArabic ? "pr-10 pl-4" : "pl-10 pr-4"} py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition`}
                       required
                     />
                   </div>
@@ -242,14 +242,14 @@ export function DemoAccessSection({ lang = 'ar' }: DemoAccessSectionProps) {
                     {isArabic ? 'رقم الهاتف *' : 'Phone Number *'}
                   </label>
                   <div className="relative">
-                    <Phone className="absolute left-3 top-3.5 w-5 h-5 text-slate-400" />
+                    <Phone className={`absolute top-3.5 w-5 h-5 text-slate-400 ${isArabic ? "right-3" : "left-3"}`} />
                     <input
                       type="tel"
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
                       placeholder={isArabic ? '+968 xxxx xxxx' : '+1 (555) 000-0000'}
-                      className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                      className={`w-full ${isArabic ? "pr-10 pl-4" : "pl-10 pr-4"} py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition`}
                       required
                     />
                   </div>
@@ -261,14 +261,14 @@ export function DemoAccessSection({ lang = 'ar' }: DemoAccessSectionProps) {
                     {isArabic ? 'اسم الشركة' : 'Company Name'}
                   </label>
                   <div className="relative">
-                    <Building2 className="absolute left-3 top-3.5 w-5 h-5 text-slate-400" />
+                    <Building2 className={`absolute top-3.5 w-5 h-5 text-slate-400 ${isArabic ? "right-3" : "left-3"}`} />
                     <input
                       type="text"
                       name="company"
                       value={formData.company}
                       onChange={handleChange}
                       placeholder={isArabic ? 'اسم شركتك' : 'Your company name'}
-                      className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                      className={`w-full ${isArabic ? "pr-10 pl-4" : "pl-10 pr-4"} py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition`}
                     />
                   </div>
                 </div>
@@ -279,14 +279,14 @@ export function DemoAccessSection({ lang = 'ar' }: DemoAccessSectionProps) {
                     {isArabic ? 'رسالة إضافية' : 'Additional Message'}
                   </label>
                   <div className="relative">
-                    <MessageSquare className="absolute left-3 top-3.5 w-5 h-5 text-slate-400" />
+                    <MessageSquare className={`absolute top-3.5 w-5 h-5 text-slate-400 ${isArabic ? "right-3" : "left-3"}`} />
                     <textarea
                       name="message"
                       value={formData.message}
                       onChange={handleChange}
                       placeholder={isArabic ? 'أخبرنا عن احتياجاتك...' : 'Tell us about your needs...'}
                       rows={3}
-                      className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
+                      className={`w-full ${isArabic ? "pr-10 pl-4" : "pl-10 pr-4"} py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition resize-none`}
                     />
                   </div>
                 </div>
@@ -297,7 +297,7 @@ export function DemoAccessSection({ lang = 'ar' }: DemoAccessSectionProps) {
                   whileTap={{ scale: 0.98 }}
                   type="submit"
                   disabled={isLoading}
-                  className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
+                  className="w-full py-3 bg-[#FF7A00] text-white font-semibold rounded-lg hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
                 >
                   <Zap className="w-5 h-5" />
                   {isLoading
@@ -305,8 +305,8 @@ export function DemoAccessSection({ lang = 'ar' }: DemoAccessSectionProps) {
                       ? 'جاري الإرسال...'
                       : 'Sending...'
                     : isArabic
-                      ? '🚀 احصل على وصول الـ Demo'
-                      : '🚀 Get Demo Access'}
+                      ? 'احصل على وصول الـ Demo'
+                      : 'Get Demo Access'}
                 </motion.button>
 
                 {/* Privacy Notice */}

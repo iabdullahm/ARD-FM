@@ -118,9 +118,7 @@ export function ScreenshotsSection({ lang = 'ar' }: ScreenshotsSectionProps) {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className={`grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center ${
-                  !isEven ? 'lg:flex-row-reverse' : ''
-                }`}
+                className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center"
               >
                 {/* Text Content */}
                 <div
@@ -153,9 +151,9 @@ export function ScreenshotsSection({ lang = 'ar' }: ScreenshotsSectionProps) {
                             delay: index * 0.1 + featureIndex * 0.05 + 0.3
                           }}
                           viewport={{ once: true }}
-                          className="flex items-center gap-3 p-3 rounded-lg bg-blue-50 hover:bg-blue-100 transition-colors"
+                          className="flex items-center gap-3 p-3 rounded-lg bg-orange-50 hover:bg-orange-100 transition-colors"
                         >
-                          <div className="flex-shrink-0 w-2 h-2 bg-gradient-to-r from-blue-600 to-blue-400 rounded-full" />
+                          <div className="flex-shrink-0 w-2 h-2 bg-[#FF7A00] rounded-full" />
                           <span className="text-sm md:text-base font-medium text-slate-700">
                             {feature}
                           </span>
@@ -208,7 +206,7 @@ export function ScreenshotsSection({ lang = 'ar' }: ScreenshotsSectionProps) {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.5 }}
           viewport={{ once: true }}
-          className="mt-24 text-center p-8 rounded-2xl bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-100"
+          className="mt-24 text-center p-8 rounded-2xl bg-gradient-to-r from-orange-50 to-amber-50 border border-orange-100"
         >
           <h3 className="text-2xl font-bold text-slate-900 mb-4">
             {isArabic ? 'هل أنت مستعد للبدء؟' : 'Ready to Get Started?'}
@@ -222,9 +220,9 @@ export function ScreenshotsSection({ lang = 'ar' }: ScreenshotsSectionProps) {
             href="https://app.rafidsystem.com/c/demo/dashboard"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-[#FF7A00] text-white font-semibold rounded-lg hover:bg-orange-600 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
           >
-            {isArabic ? '🚀 جرب Demo الآن' : '🚀 Try Demo Now'}
+            {isArabic ? 'جرب Demo الآن' : 'Try Demo Now'}
           </a>
         </motion.div>
       </div>

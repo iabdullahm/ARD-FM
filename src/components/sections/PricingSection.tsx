@@ -43,7 +43,7 @@ export function PricingSection({ align = "rtl" }: { align?: "rtl" | "ltr" }) {
   ]
 
   return (
-    <div className={"mx-auto max-w-[1200px] py-10 px-4 " + (isRtl ? "text-right" : "text-left")}>
+    <section id="pricing" className={"mx-auto max-w-[1200px] py-10 px-4 " + (isRtl ? "text-right" : "text-left")}>
       <div className="text-center mb-12">
         <h2 className="text-3xl font-black text-slate-900 sm:text-4xl">{t.title}</h2>
         <p className="mt-4 text-lg text-slate-600">{t.subtitle}</p>
@@ -63,7 +63,7 @@ export function PricingSection({ align = "rtl" }: { align?: "rtl" | "ltr" }) {
           >
             {t.annual}
             <span className={"inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-bold transition-colors " + (isAnnual ? "bg-emerald-400 text-emerald-950" : "bg-orange-100 text-orange-600")}>
-              🔥 {t.saveBadge}
+              {t.saveBadge}
             </span>
           </button>
         </div>
@@ -89,7 +89,7 @@ export function PricingSection({ align = "rtl" }: { align?: "rtl" | "ltr" }) {
               >
                  {plan.popular && (
                     <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-[#FF7A00] px-4 py-1 text-sm font-bold text-white shadow-sm whitespace-nowrap">
-                       🔥 {t.popular}
+                       {t.popular}
                     </div>
                  )}
                  <div className="mb-6">
@@ -144,6 +144,6 @@ export function PricingSection({ align = "rtl" }: { align?: "rtl" | "ltr" }) {
             {t.customCTA}
          </a>
       </motion.div>
-    </div>
+    </section>
   )
 }

@@ -1,10 +1,21 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async redirects() {
+    return [
+      {
+        source: '/login',
+        destination: 'https://app.rafidsystem.com/',
+        permanent: false,
+      },
+      {
+        source: '/signup',
+        destination: 'https://app.rafidsystem.com/',
+        permanent: false,
+      },
+    ];
+  },
   eslint: {
     ignoreDuringBuilds: true,
-  },
-  typescript: {
-    ignoreBuildErrors: true,
   },
   images: {
     // Allow SVG files - safe because we only host our own SVGs in /public

@@ -14,23 +14,42 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
+const STORAGE_KEY = 'rafid-lang';
+
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguage] = useState<Language>('ar');
   const [dir, setDir] = useState<Direction>('rtl');
 
+  // Restore saved preference once on mount
   useEffect(() => {
-    const newDir = language === 'ar' ? 'rtl' : 'ltr';
+    try {
+      const saved = window.localStorage.getItem(STORAGE_KEY);
+      if (saved === 'en' || saved === 'ar') {
+        setLanguage(saved);
+      }
+    } catch {
+      // localStorage unavailable (private mode etc.) — keep default
+    }
+  }, []);
+
+  useEffect(() => {
+    const newDir: Direction = language === 'ar' ? 'rtl' : 'ltr';
     setDir(newDir);
     document.documentElement.lang = language;
     document.documentElement.dir = newDir;
-    // Remove dark mode class to use light theme
+    // Light theme only
     document.documentElement.classList.remove('dark');
 
-    // This will set the body classes, preserving existing ones from Next.js
     document.body.className = cn(
       'min-h-screen bg-background font-body antialiased',
       language === 'ar' ? 'font-arabic' : 'font-body'
     );
+
+    try {
+      window.localStorage.setItem(STORAGE_KEY, language);
+    } catch {
+      // ignore
+    }
   }, [language]);
 
   const toggleLanguage = () => {

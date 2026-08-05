@@ -1,4 +1,10 @@
+import type { Metadata } from 'next';
 import { LoginClient } from './client';
+
+export const metadata: Metadata = {
+  title: 'تسجيل الدخول | Login',
+  robots: { index: false, follow: false },
+};
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';

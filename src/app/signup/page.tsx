@@ -1,4 +1,10 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
+
+export const metadata: Metadata = {
+  title: 'إنشاء حساب | Sign Up',
+  robots: { index: false, follow: false },
+};
 import { Button } from '@/components/ui/button';
 import {
   Card,

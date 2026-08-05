@@ -1,15 +1,30 @@
 import type { Metadata, Viewport } from 'next';
+import { Cairo, Inter } from 'next/font/google';
+import { GoogleAnalytics } from '@next/third-parties/google';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { LanguageProvider } from '@/contexts/LanguageContext';
+
+const cairo = Cairo({
+  subsets: ['arabic', 'latin'],
+  weight: ['400', '500', '700', '800'],
+  variable: '--font-cairo',
+  display: 'swap',
+});
+
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-inter',
+  display: 'swap',
+});
 
 const SITE_URL = 'https://www.rafidsystem.com';
 const SITE_NAME = 'Rafid | رافد';
 const TITLE_AR = 'رافد | نظام إدارة المرافق والعقارات في سلطنة عُمان';
 const DESCRIPTION_AR =
-  'منصة سحابية متكاملة لإدارة المرافق والعقارات: تقليل زمن الإصلاح بنسبة 30%، توفر 99.99%، توسعة لـ50+ منشأة في الساعة، مع تشفير AES-256 ومصادقة ثنائية.';
-const OG_IMAGE =
-  '/images/screenshots/hero.svg';
+  'منصة سحابية متكاملة لإدارة المرافق والعقارات في سلطنة عُمان: إدارة العقود والصيانة والمدفوعات، مسح QR، تتبع GPS للفنيين، وتشفير AES-256 مع مصادقة ثنائية.';
+const OG_IMAGE = '/images/og-image.png';
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -34,7 +49,6 @@ export const metadata: Metadata = {
   publisher: 'Creative Techno LLC',
   alternates: {
     canonical: SITE_URL,
-    languages: { 'ar-OM': SITE_URL, 'en-OM': SITE_URL + '/en' },
   },
   openGraph: {
     type: 'website',
@@ -43,7 +57,7 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     title: TITLE_AR,
     description: DESCRIPTION_AR,
-    images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: 'لوحة تحكم رافد' }],
+    images: [{ url: OG_IMAGE, width: 1200, height: 630, alt: 'رافد — نظام إدارة المرافق والعقارات' }],
   },
   twitter: {
     card: 'summary_large_image',
@@ -57,13 +71,14 @@ export const metadata: Metadata = {
     googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1 },
   },
   icons: {
-    icon: [{ url: '/icon.png', type: 'image/png', sizes: '1024x1024' }],
-    apple: '/icon.png',
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon.png', type: 'image/png', sizes: '512x512' },
+    ],
+    apple: '/apple-icon.png',
   },
   category: 'business',
 };
-
-export const dynamic = 'force-dynamic';
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -76,7 +91,7 @@ const jsonLd = {
       operatingSystem: 'Web, iOS, Android',
       description: DESCRIPTION_AR,
       url: SITE_URL,
-      image: OG_IMAGE,
+      image: `${SITE_URL}/images/og-image.png`,
       offers: {
         '@type': 'AggregateOffer',
         priceCurrency: 'OMR',
@@ -99,10 +114,12 @@ const jsonLd = {
       '@type': 'Organization',
       name: 'Creative Techno LLC',
       url: SITE_URL,
-      logo: '/images/logo.png',
+      logo: `${SITE_URL}/images/logo.png`,
       contactPoint: {
         '@type': 'ContactPoint',
         contactType: 'sales',
+        email: 'abdullah.j@creativetechno.net',
+        telephone: '+968-9297-5614',
         availableLanguage: ['Arabic', 'English'],
         areaServed: 'OM',
       },
@@ -119,14 +136,13 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="ar" dir="rtl" suppressHydrationWarning>
+    <html
+      lang="ar"
+      dir="rtl"
+      className={`${cairo.variable} ${inter.variable}`}
+      suppressHydrationWarning
+    >
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700;800&family=Inter:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap"
-          rel="stylesheet"
-        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -137,6 +153,9 @@ export default function RootLayout({
           {children}
           <Toaster />
         </LanguageProvider>
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
+        )}
       </body>
     </html>
   );

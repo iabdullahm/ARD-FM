@@ -29,7 +29,7 @@ import { RichFooter } from '@/components/sections/RichFooter';
 import { TrustSection } from '@/components/sections/TrustSection';
 import { DemoCredentialsSection } from '@/components/sections/DemoCredentialsSection';
 import { ScreenshotsSection } from '@/components/sections/ScreenshotsSection';
-import { DemoAccessSection } from '@/components/sections/DemoAccessSection';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 type Lang = 'ar' | 'en';
 
@@ -50,13 +50,13 @@ const STRINGS = {
       blog: 'المدونة',
     },
     hero: {
-      badge: 'منصة إدارة المرافق والعقارات #1 في سلطنة عُمان',
-      title: '⚡ أدر 500+ عقار من لوحة تحكم واحدة',
+      badge: 'منصة عُمانية لإدارة المرافق والعقارات',
+      title: 'أدر جميع عقاراتك من لوحة تحكم واحدة',
       subtitle: 'منصة سحابية موحّدة لإدارة العقارات والصيانة والعقود والمدفوعات، مدعومة بمسح QR، تتبع GPS للفنيين، ومؤقتات SLA تلقائية.',
       cta: 'ابدأ الآن مجاناً',
       stats: [
-        { value: '40%', label: 'خفّض تكاليف الصيانة 📉' },
-        { value: '60%', label: 'زيادة الإنتاجية 📈' },
+        { value: 'حتى 40%', label: 'انخفاض في تكاليف الصيانة' },
+        { value: 'حتى 60%', label: 'زيادة في الإنتاجية' },
       ],
     },
   },
@@ -76,28 +76,26 @@ const STRINGS = {
       blog: 'Blog',
     },
     hero: {
-      badge: 'The #1 Facilities & Property Management Platform in Oman',
-      title: '⚡ Manage 500+ Properties from One Dashboard',
+      badge: 'Oman-Built Facilities & Property Management Platform',
+      title: 'Manage All Your Properties from One Dashboard',
       subtitle: 'A unified cloud platform for property, maintenance, contract and payment management with QR scanning, technician GPS tracking, and automatic SLA timers.',
       cta: 'Start Free Today',
       stats: [
-        { value: '40%', label: 'Reduce Maintenance Costs 📉' },
-        { value: '60%', label: 'Boost Productivity 📈' },
+        { value: 'Up to 40%', label: 'Lower maintenance costs' },
+        { value: 'Up to 60%', label: 'Higher productivity' },
       ],
     },
   },
 };
 
 export default function HomePage() {
-  const [lang, setLang] = useState<Lang>('ar');
+  const { language: lang, toggleLanguage } = useLanguage();
   const [menuOpen, setMenuOpen] = useState(false);
   const isArabic = lang === 'ar';
   const t = STRINGS[lang];
 
   const items = [
-    { label: t.nav.features, href: '#features' },
-    { label: t.nav.howItWorks, href: '#how' },
-    { label: t.nav.whoFor, href: '#why' },
+    { label: t.nav.features, href: '#screenshots' },
     { label: t.nav.pricing, href: '#pricing' },
     { label: t.nav.faq, href: '#faq' },
     { label: t.nav.contact, href: '#contact' },
@@ -112,7 +110,7 @@ export default function HomePage() {
       <header className="fixed inset-x-0 top-0 z-50 bg-white/90 backdrop-blur-xl border-b border-slate-100">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-20 items-center justify-between">
-            <a href="#" className="flex items-center gap-3">
+            <a href="/" className="flex items-center gap-3">
               <div className="relative h-12 w-12">
                 <Image
                   src="/images/logo.png"
@@ -137,7 +135,7 @@ export default function HomePage() {
 
             <div className="hidden items-center gap-4 lg:flex">
               <button
-                onClick={() => setLang(isArabic ? 'en' : 'ar')}
+                onClick={toggleLanguage}
                 className="inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-bold text-slate-600 transition hover:bg-slate-50"
               >
                 <Globe className="h-4 w-4" />
@@ -179,7 +177,7 @@ export default function HomePage() {
                 <hr className="my-2 border-slate-100" />
                 <button
                   onClick={() => {
-                    setLang(isArabic ? 'en' : 'ar');
+                    toggleLanguage();
                     setMenuOpen(false);
                   }}
                   className="rounded-xl px-4 py-3 text-sm font-bold text-slate-700 transition hover:bg-slate-50 text-right flex items-center gap-2"
@@ -244,13 +242,10 @@ export default function HomePage() {
       </section>
 
       {/* Trust Signals Section */}
-      <TrustSection />
+      <TrustSection lang={lang} />
 
       {/* Demo Credentials Section */}
-      <DemoCredentialsSection />
-
-      {/* Demo Access Signup Section */}
-      <DemoAccessSection lang={lang} />
+      <DemoCredentialsSection lang={lang} />
 
       {/* Screenshots Section */}
       <ScreenshotsSection lang={lang} />
